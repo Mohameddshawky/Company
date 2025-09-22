@@ -55,5 +55,32 @@ namespace Company.PL.Controllers
 
             return View(department);    
         }
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id is null) return BadRequest();
+
+            var department = departmentRepository.Get(id.Value);
+
+            if (department is null) return NotFound(new { StatusCode = 404, Message = "Department is not found" });
+
+            return View(department);    
+        }
+        [HttpPost]
+        public IActionResult Edit([FromRoute] int id,Departments department)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id == department.Id)
+                {
+                    var cnt = departmentRepository.Update(department);
+                    if (cnt > 0) return RedirectToAction(nameof(Index));
+                }
+                else
+                    return BadRequest();
+            }
+            return View(department);
+        }
     }
 }
