@@ -67,7 +67,10 @@ namespace Company.PL.Controllers
 
             return View(department);    
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]//prefer for any post action
+        //prevent any one to request rather than client side
         public IActionResult Edit([FromRoute] int id,Departments department)
         {
             if (ModelState.IsValid)
@@ -75,6 +78,34 @@ namespace Company.PL.Controllers
                 if (id == department.Id)
                 {
                     var cnt = departmentRepository.Update(department);
+                    if (cnt > 0) return RedirectToAction(nameof(Index));
+                }
+                else
+                    return BadRequest();
+            }
+            return View(department);
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id is null) return BadRequest();
+
+            var department = departmentRepository.Get(id.Value);
+
+            if (department is null) return NotFound(new { StatusCode = 404, Message = "Department is not found" });
+
+            return View(department);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete([FromRoute] int id, Departments department)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id == department.Id)
+                {
+                    var cnt = departmentRepository.Delete(department);
                     if (cnt > 0) return RedirectToAction(nameof(Index));
                 }
                 else

@@ -1,15 +1,14 @@
 ﻿@model Departments
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Delete";
 }
 
-
-<h1>Details Page</h1>
+<h1>Delete Department</h1>
 
 <br />
 <br />
 
-<div>
+<form asp-action="Delete">
     <div class="form-group">
         <label asp-for="Code" class="col-form-label"></label>
         <input readonly asp-for="Code" class="form-control" />
@@ -22,11 +21,9 @@
         <label asp-for="CreateAt" class="col-form-label"></label>
         <input readonly asp-for="CreateAt" class="form-control" />
     </div>
-   
-    <div class="mt-4">    
-    <a asp-controller="Department" asp-action="Edit"  asp-route-id="@Model.Id"   class="btn btn-warning">Edit</a>
+     <div class="mt-4">    
+    <input type="submit" value="Delete" class="btn btn-danger" />
     <a asp-controller="Department" asp-action="Index" class="btn btn-light">Back To List</a>
-</div>
-</div>
-
+      </div>
+</form>
 
