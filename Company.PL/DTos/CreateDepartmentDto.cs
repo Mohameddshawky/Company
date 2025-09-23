@@ -4,10 +4,10 @@ namespace Company.PL.DTos
 {
     public class CreateDepartmentDto
     {
-        [Required]
+        [Required(ErrorMessage ="Name is Required")]
 
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Code is Required")]
         public string Code { get; set; }
         [Required]
 
