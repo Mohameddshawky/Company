@@ -24,5 +24,6 @@ namespace Company.DAL.Data.Contexts
         //    optionsBuilder.UseSqlServer("Server = SHAWKY\\MSQLSERVER ;Database= project1 ; Trusted_Connection =True ; TrustServerCertificate=true");
         //}
         public DbSet<Departments> Departments { get; set; }
+        public DbSet<Employee> Employees { get; set; }
     }
 }
