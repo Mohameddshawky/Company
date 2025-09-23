@@ -3,6 +3,7 @@ using Company.BLL.Repositories;
 using Company.DAL.Models;
 using Company.PL.DTos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace Company.PL.Controllers
 {
@@ -42,6 +43,65 @@ namespace Company.PL.Controllers
                 }
             }
             return View();
+        }
+        [HttpGet]
+        public IActionResult Details(int?id,string ViewName= "Details")
+        {
+            if (id is null) return BadRequest();
+
+            var department = departmentRepository.Get(id.Value);
+
+            if (department is null) return NotFound(new {StatusCode=404,Message="Department is not found"});
+
+            return View(ViewName,department);    
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            
+            return Details(id,"Edit");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]//prefer for any post action
+        //prevent any one to request rather than client side
+        public IActionResult Edit([FromRoute] int id,Departments department)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id == department.Id)
+                {
+                    var cnt = departmentRepository.Update(department);
+                    if (cnt > 0) return RedirectToAction(nameof(Index));
+                }
+                else
+                    return BadRequest();
+            }
+            return View(department);
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+           
+            return Details(id, "Delete");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete([FromRoute] int id, Departments department)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id == department.Id)
+                {
+                    var cnt = departmentRepository.Delete(department);
+                    if (cnt > 0) return RedirectToAction(nameof(Index));
+                }
+                else
+                    return BadRequest();
+            }
+            return View(department);
         }
     }
 }
