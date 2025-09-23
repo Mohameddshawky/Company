@@ -45,7 +45,7 @@ namespace Company.PL.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult Details(int?id)
+        public IActionResult Details(int?id,string ViewName= "Details")
         {
             if (id is null) return BadRequest();
 
@@ -53,19 +53,14 @@ namespace Company.PL.Controllers
 
             if (department is null) return NotFound(new {StatusCode=404,Message="Department is not found"});
 
-            return View(department);    
+            return View(ViewName,department);    
         }
 
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            if (id is null) return BadRequest();
-
-            var department = departmentRepository.Get(id.Value);
-
-            if (department is null) return NotFound(new { StatusCode = 404, Message = "Department is not found" });
-
-            return View(department);    
+            
+            return Details(id,"Edit");
         }
 
         [HttpPost]
@@ -89,13 +84,8 @@ namespace Company.PL.Controllers
         [HttpGet]
         public IActionResult Delete(int? id)
         {
-            if (id is null) return BadRequest();
-
-            var department = departmentRepository.Get(id.Value);
-
-            if (department is null) return NotFound(new { StatusCode = 404, Message = "Department is not found" });
-
-            return View(department);
+           
+            return Details(id, "Delete");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
