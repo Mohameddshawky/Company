@@ -66,25 +66,54 @@ namespace Company.PL.Controllers
         public IActionResult Edit(int? id)
         {
 
-            return Details(id, "Edit");
+            if (id is null) return BadRequest();
+
+            var model = employeeRepository.Get(id.Value);
+
+            if (model is null) return NotFound(new { StatusCode = 404, Message = "Employee is not found" });
+            var employee = new EmployeeDTO()
+            {
+               
+                Name = model.Name,
+                Age = model.Age,
+                Address = model.Address,
+                Email = model.Email,
+                Phone = model.Phone,
+                IsActive = model.IsActive,
+                IsDeleted = model.IsDeleted,
+                CreateAt = model.CreateAt,
+                HiringDate = model.HiringDate,
+                Salary = model.Salary,
+            };
+
+            return View(employee);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]//prefer for any post action
         //prevent any one to request rather than client side
-        public IActionResult Edit([FromRoute] int id, Employee employee)
+        public IActionResult Edit([FromRoute] int id, EmployeeDTO model)
         {
             if (ModelState.IsValid)
             {
-                if (id == employee.Id)
+                var employee = new Employee()
                 {
-                    var cnt = employeeRepository.Update(employee);
-                    if (cnt > 0) return RedirectToAction(nameof(Index));
-                }
-                else
-                    return BadRequest();
+                    Id=id,
+                    Name = model.Name,
+                    Age = model.Age,
+                    Address = model.Address,
+                    Email = model.Email,
+                    Phone = model.Phone,
+                    IsActive = model.IsActive,
+                    IsDeleted = model.IsDeleted,
+                    CreateAt = model.CreateAt,
+                    HiringDate = model.HiringDate,
+                    Salary = model.Salary,
+                };
+                var cnt = employeeRepository.Update(employee);
+                if (cnt > 0) return RedirectToAction(nameof(Index));               
             }
-            return View(employee);
+            return View(model);
         }
 
         [HttpGet]

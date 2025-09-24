@@ -59,26 +59,42 @@ namespace Company.PL.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            
-            return Details(id,"Edit");
+
+            if (id is null) return BadRequest();
+
+            var department = departmentRepository.Get(id.Value);
+
+            if (department is null) return NotFound(new { StatusCode = 404, Message = "Department is not found" });
+            var Department = new CreateDepartmentDto
+            {
+                Name = department.Name,
+                Code = department.Code,
+                CreateAt = department.CreateAt,
+            };
+
+            return View(Department);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]//prefer for any post action
         //prevent any one to request rather than client side
-        public IActionResult Edit([FromRoute] int id,Departments department)
+        public IActionResult Edit([FromRoute] int id, Departments model)
         {
             if (ModelState.IsValid)
             {
-                if (id == department.Id)
+                var Department = new Departments
                 {
-                    var cnt = departmentRepository.Update(department);
-                    if (cnt > 0) return RedirectToAction(nameof(Index));
-                }
-                else
-                    return BadRequest();
+                    Id = id,
+                    Name = model.Name,
+                    Code = model.Code,
+                    CreateAt = model.CreateAt,
+                };
+                var cnt = departmentRepository.Update(Department);
+                if (cnt > 0) return RedirectToAction(nameof(Index));
+
+
             }
-            return View(department);
+            return View(model);
         }
 
         [HttpGet]
