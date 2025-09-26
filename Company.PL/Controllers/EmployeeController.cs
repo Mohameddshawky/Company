@@ -8,9 +8,13 @@ namespace Company.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository employeeRepository;
-        public EmployeeController(IEmployeeRepository _employeeRepository)
+        private readonly IDepartmentRepository departmentRepository;
+
+        public EmployeeController(IEmployeeRepository _employeeRepository,
+           IDepartmentRepository _departmentRepository )
         {
             employeeRepository = _employeeRepository;
+            departmentRepository = _departmentRepository;
         }
         [HttpGet]
         public IActionResult Index()
@@ -22,6 +26,7 @@ namespace Company.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+           
             return View();
         }
         [HttpPost]
@@ -40,7 +45,8 @@ namespace Company.PL.Controllers
                     IsDeleted = model.IsDeleted,    
                     CreateAt = model.CreateAt,  
                     HiringDate = model.HiringDate,  
-                    Salary=model.Salary,          
+                    Salary=model.Salary,
+                    DepartmentId = model.DepartmentId,  
                 };
                 var cnt = employeeRepository.Add(employee);
                 string message;
@@ -91,6 +97,7 @@ namespace Company.PL.Controllers
                 CreateAt = model.CreateAt,
                 HiringDate = model.HiringDate,
                 Salary = model.Salary,
+                DepartmentId = model.DepartmentId,  
             };
 
             return View(employee);
@@ -116,6 +123,7 @@ namespace Company.PL.Controllers
                     CreateAt = model.CreateAt,
                     HiringDate = model.HiringDate,
                     Salary = model.Salary,
+                    DepartmentId = model.DepartmentId,  
                 };
                 var cnt = employeeRepository.Update(employee);
                 if (cnt > 0) return RedirectToAction(nameof(Index));               
