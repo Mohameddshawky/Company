@@ -43,10 +43,17 @@ namespace Company.PL.Controllers
                     Salary=model.Salary,          
                 };
                 var cnt = employeeRepository.Add(employee);
+                string message;
                 if (cnt > 0)
                 {
-                    return RedirectToAction(nameof(Index));
+                    message = "Employee Created Successfully";
                 }
+                else {
+                    message = "Employee Can Not Be Created ";
+
+                }
+                TempData["message"]=message;
+                return RedirectToAction(nameof(Index));
             }
             return View(model);
         }

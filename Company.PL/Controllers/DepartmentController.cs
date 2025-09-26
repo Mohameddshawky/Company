@@ -21,6 +21,7 @@ namespace Company.PL.Controllers
            
             var departments=departmentRepository.GetAll().ToList();
             return View(departments);
+
         }
         [HttpGet]
         public IActionResult Create()
@@ -38,9 +39,16 @@ namespace Company.PL.Controllers
                     CreateAt = model.CreateAt,
                 };
                var cnt= departmentRepository.Add(Department);
+                string message;
                 if (cnt > 0) {
-                    return RedirectToAction(nameof(Index));
+                     message = "Department Created Successfully";
                 }
+                else
+                {
+                    message = "Department Can Not Be Created ";
+                }
+                TempData["message"] = message;
+                return RedirectToAction(nameof(Index));
             }
             return View();
         }
