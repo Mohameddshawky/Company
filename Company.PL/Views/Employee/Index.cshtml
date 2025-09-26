@@ -7,12 +7,12 @@
 <br />
 <br />
 
-<a asp-action="Create" asp-controller="Employee" class ="btn btn-primary">Create Employee</a>
+<a asp-action="Create" asp-controller="Employee" class ="btn btn-primary mb-3">➕Create Employee</a>
 
 @if (Model.Count() > 0)
 {
-    <table class="table table-hover table-striped">
-        <thead>
+    <table class="table table-striped table-hover table-bordered shadow-sm">
+        <thead class="table-dark text-center">
             <tr>
                 <th>Name</th>
                 <th>Age</th>
@@ -40,8 +40,28 @@
                     <td>@item.Address</td>
                     <td>@item.Phone</td>
                     <td>@item.Salary</td>
-                    <td>@item.IsActive</td>
-                    <td>@item.IsDeleted</td>
+                    <td>
+    @if (item.IsActive)
+    {
+        <span class="badge bg-success">Active</span>
+    }
+    else
+    {
+        <span class="badge bg-secondary">Inactive</span>
+    }
+</td>
+
+<td>
+    @if (item.IsDeleted)
+    {
+        <span class="badge bg-danger">Deleted</span>
+    }
+    else
+    {
+        <span class="badge bg-success">Not Deleted</span>
+    }
+</td>
+
                     <td>@item.HiringDate</td>
                     <td>@item.CreateAt</td>
                     <partial name="DepartmentEmployeePartial" model="@item.Id" />
@@ -54,9 +74,11 @@
 }
 else
 {
-    <div class="mt-4 alert alert-info">
-        <h4>There are no Employees(:</h4>
-    </div>
+    <div class="mt-4 alert alert-info d-flex align-items-center">
+    <i class="bi bi-info-circle-fill me-2"></i>
+    <span>There are no employees 🙂</span>
+</div>
+
 }
 
 
