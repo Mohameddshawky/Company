@@ -13,5 +13,7 @@ namespace Company.DAL.Models
         public string Code { get; set; }
         public DateTime CreateAt { get; set; }
 
+        public ICollection<Employee> Employees { get; set; }=new HashSet<Employee>();
+
     }
 }
