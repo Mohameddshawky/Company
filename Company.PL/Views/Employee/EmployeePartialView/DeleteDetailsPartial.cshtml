@@ -1,4 +1,5 @@
 ﻿@model Employee
+
  <div class="my-3">
         <label asp-for="Name" class="col-form-label">Name</label>@*asp for bind the input for prop*@
         <input asp-for="Name" class="form-control" readonly />
@@ -39,5 +40,8 @@
     <div class="my-3">
         <label asp-for="CreateAt" class="col-form-label">CreateAt</label>@*asp for bind the input for prop*@
         <input asp-for="CreateAt" class="form-control" readonly />
-
+    </div>
+    <div class="my-3">
+        <label asp-for="Departments" class="col-form-label">Department</label>@*asp for bind the input for prop*@
+        <input asp-for="Departments.Name" class="form-control" readonly />
     </div>

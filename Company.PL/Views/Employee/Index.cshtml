@@ -27,6 +27,7 @@
                 <th>IsDeleted</th>
                 <th>@Html.DisplayNameFor(e=>e.HiringDate)</th>
                 <th>@Html.DisplayNameFor(e=>e.CreateAt)</th>
+                <th>Department</th>
                 <th>Details</th>
                 <th>update</th>
                 <th>Delete</th>
@@ -67,6 +68,7 @@
 
                     <td>@item.HiringDate</td>
                     <td>@item.CreateAt</td>
+                    <td>@item.Departments?.Name </td>
                     <partial name="DepartmentEmployeePartial" model="@item.Id" />
                 </tr>
             }
