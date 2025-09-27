@@ -1,4 +1,5 @@
-﻿using Company.BLL.Interfaces;
+﻿using AutoMapper;
+using Company.BLL.Interfaces;
 using Company.BLL.Repositories;
 using Company.DAL.Models;
 using Company.PL.DTos;
@@ -11,15 +12,23 @@ namespace Company.PL.Controllers
     public class DepartmentController : Controller
     {
         private readonly IDepartmentRepository departmentRepository;
-        public DepartmentController(IDepartmentRepository _departmentRepository)
+        private readonly IMapper mapper;
+
+        public DepartmentController(IDepartmentRepository _departmentRepository,
+            IMapper mapper)
         {
             departmentRepository = _departmentRepository;
+            this.mapper = mapper;
         }
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string? DepartmentSearchName)
         {
-           
-            var departments=departmentRepository.GetAll().ToList();
+            IEnumerable<Departments> departments;
+            if(string.IsNullOrEmpty(DepartmentSearchName))  
+                departments=departmentRepository.GetAll().ToList();
+            else
+                departments = departmentRepository.Search(DepartmentSearchName).ToList();
+
             return View(departments);
 
         }
@@ -32,12 +41,8 @@ namespace Company.PL.Controllers
         public IActionResult Create(CreateDepartmentDto model)
         {
             if (ModelState.IsValid) {//server side validation
-                var Department = new Departments
-                {
-                    Name = model.Name,
-                    Code = model.Code,
-                    CreateAt = model.CreateAt,
-                };
+                
+                var Department = mapper.Map<Departments>(model);
                var cnt= departmentRepository.Add(Department);
                 string message;
                 if (cnt > 0) {
@@ -73,12 +78,8 @@ namespace Company.PL.Controllers
             var department = departmentRepository.Get(id.Value);
 
             if (department is null) return NotFound(new { StatusCode = 404, Message = "Department is not found" });
-            var Department = new CreateDepartmentDto
-            {
-                Name = department.Name,
-                Code = department.Code,
-                CreateAt = department.CreateAt,
-            };
+            
+            var Department = mapper.Map<CreateDepartmentDto>(department);
 
             return View(Department);
         }
@@ -90,13 +91,10 @@ namespace Company.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                var Department = new Departments
-                {
-                    Id = id,
-                    Name = model.Name,
-                    Code = model.Code,
-                    CreateAt = model.CreateAt,
-                };
+                
+                
+                var Department = mapper.Map<Departments>(model);
+                Department.Id = id; 
                 var cnt = departmentRepository.Update(Department);
                 if (cnt > 0) return RedirectToAction(nameof(Index));
 

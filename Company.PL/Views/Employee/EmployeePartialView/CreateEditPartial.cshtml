@@ -1,4 +1,9 @@
-﻿    @model EmployeeDTO
+﻿
+    @model EmployeeDTO
+    @inject IDepartmentRepository departmentRepository
+@{
+    var department = new SelectList(departmentRepository.GetAll(), "Id", nameof(Departments.Name));
+}
 <div class="my-3">
         <label asp-for="Name" class="col-form-label">Name</label>@*asp for bind the input for prop*@
         <input asp-for="Name" class="form-control" />
@@ -44,6 +49,13 @@
     <input asp-for="IsDeleted" class="form-check-input" />
     <label asp-for="IsDeleted" class="form-check-label"></label>
     </div>
+  <div class="my-3">
+    <label class="form-label" asp-for="DepartmentId"></label>
+    <select asp-for="DepartmentId" asp-items="department" class="form-control">
+        <option value="@null">-- Select Department --</option>
+    </select>
+    <span asp-validation-for="DepartmentId" class="text-danger"></span>
+</div>
     <div class="my-3">
         <label asp-for="HiringDate" class="col-form-label">HiringDate</label>@*asp for bind the input for prop*@
         <input asp-for="HiringDate" class="form-control" />
