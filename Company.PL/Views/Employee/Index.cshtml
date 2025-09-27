@@ -10,7 +10,22 @@
 <br />
 <br />
 
+
+
 <a asp-action="Create" asp-controller="Employee" class ="btn btn-primary mb-3">➕Create Employee</a>
+
+<div class="m-2">
+    <form asp-action="index" class="row offset-2"  method="get">
+        <div class="col-8">
+            <input   class="form-control" type="text" name="EmployeeSearchName" placeholder="Search Employee By Name"/>
+        </div>
+        <div class="col-4">
+            <input  type="submit" class="btn btn-outline-success" value="Search"/>
+
+        </div>
+    </form>
+
+</div>
 
 @if (Model.Count() > 0)
 {

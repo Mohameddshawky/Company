@@ -16,10 +16,14 @@ namespace Company.PL.Controllers
             departmentRepository = _departmentRepository;
         }
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string? DepartmentSearchName)
         {
-           
-            var departments=departmentRepository.GetAll().ToList();
+            IEnumerable<Departments> departments;
+            if(string.IsNullOrEmpty(DepartmentSearchName))  
+                departments=departmentRepository.GetAll().ToList();
+            else
+                departments = departmentRepository.Search(DepartmentSearchName).ToList();
+
             return View(departments);
 
         }

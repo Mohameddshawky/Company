@@ -3,6 +3,7 @@ using Company.DAL.Data.Contexts;
 using Company.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,6 +45,16 @@ namespace Company.BLL.Repositories
                 return _dbContext.Employees.Include(e=>e.Departments).ToList()as IEnumerable<t>;
             }
              return _dbContext.Set<t>().ToList();
+        }
+
+        public IEnumerable<t> Search(string name)
+        {
+            if (typeof(t) == typeof(Employee))
+            {
+                return _dbContext.Employees.Include(e => e.Departments).Where(x=>x.Name.ToLower().Contains(name.ToLower())).ToList() as IEnumerable<t>;
+            }
+            else
+                return _dbContext.Departments.Where(x => x.Name.ToLower().Contains(name.ToLower())).ToList() as IEnumerable<t>;
         }
 
         public int Update(t data)

@@ -17,11 +17,14 @@ namespace Company.PL.Controllers
             departmentRepository = _departmentRepository;
         }
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string? EmployeeSearchName)
         {
-
-            var employees = employeeRepository.GetAll().ToList();
-            return View(employees);
+            IEnumerable<Employee> employees;
+            if (String.IsNullOrEmpty(EmployeeSearchName))
+                 employees = employeeRepository.GetAll().ToList();
+            else
+                employees= employeeRepository.Search(EmployeeSearchName);
+                return View(employees);
         }
         [HttpGet]
         public IActionResult Create()

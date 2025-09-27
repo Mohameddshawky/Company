@@ -13,6 +13,19 @@
 
 <a asp-action="Create" asp-controller="Department" class ="btn btn-primary  mb-3">➕ Create Department</a>
 
+<div class="m-2">
+    <form asp-action="index" class="row offset-2"  method="get">
+        <div class="col-8">
+            <input   class="form-control" type="text" name="DepartmentSearchName" placeholder="Search Department By Name"/>
+        </div>
+        <div class="col-4">
+            <input  type="submit" class="btn btn-outline-success" value="Search"/>
+
+        </div>
+    </form>
+
+</div>
+
 @if (Model.Count() > 0)
 {
     <table class="table table-striped table-hover table-bordered shadow-sm">
