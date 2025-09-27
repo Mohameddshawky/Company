@@ -3,26 +3,28 @@
     ViewData["Title"] = "Index";
     string message = TempData["message"] as string;
 }
-@if(!String.IsNullOrEmpty(message)){
-<div aria-live="polite" aria-atomic="true" class="toast-container position-fixed p-3" style="bottom: 25px; right:25px; z-index: 100;">
-    <div class="toast fade show " role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <strong class="me-auto text-success">Success!!</strong>
-            <small>Just now</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            @TempData["message"]
-        </div>
-    </div>
-    </div>
-}
+
+<partial name="ErrorMessagePartialView" model="message" ></partial>
+
 
 <h1>All Department</h1>
 <br />
 <br />
 
 <a asp-action="Create" asp-controller="Department" class ="btn btn-primary  mb-3">➕ Create Department</a>
+
+<div class="m-2">
+    <form asp-action="index" class="row offset-2"  method="get">
+        <div class="col-8">
+            <input   class="form-control" type="text" name="DepartmentSearchName" placeholder="Search Department By Name"/>
+        </div>
+        <div class="col-4">
+            <input  type="submit" class="btn btn-outline-success" value="Search"/>
+
+        </div>
+    </form>
+
+</div>
 
 @if (Model.Count() > 0)
 {
