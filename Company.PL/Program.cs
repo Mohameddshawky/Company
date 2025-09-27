@@ -1,6 +1,7 @@
 using Company.BLL.Interfaces;
 using Company.BLL.Repositories;
 using Company.DAL.Data.Contexts;
+using Company.PL.Mapping;
 using Microsoft.EntityFrameworkCore;
 
 namespace Company.PL
@@ -15,6 +16,8 @@ namespace Company.PL
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();//allow di for class
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();//allow di for class
+            builder.Services.AddAutoMapper(m=>m.AddProfile(new EmployeeProfile()));
+            builder.Services.AddAutoMapper(m=>m.AddProfile(new DepartmentProfile()));
             builder.Services.AddDbContext<CompanyDbContext>(option =>
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));

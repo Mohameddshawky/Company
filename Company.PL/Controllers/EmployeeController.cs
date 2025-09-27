@@ -1,4 +1,5 @@
-﻿using Company.BLL.Interfaces;
+﻿using AutoMapper;
+using Company.BLL.Interfaces;
 using Company.DAL.Models;
 using Company.PL.DTos;
 using Microsoft.AspNetCore.Mvc;
@@ -9,12 +10,16 @@ namespace Company.PL.Controllers
     {
         private readonly IEmployeeRepository employeeRepository;
         private readonly IDepartmentRepository departmentRepository;
+        private readonly IMapper mapper;
 
-        public EmployeeController(IEmployeeRepository _employeeRepository,
-           IDepartmentRepository _departmentRepository )
+        public EmployeeController(
+            IEmployeeRepository _employeeRepository,
+           IDepartmentRepository _departmentRepository,
+           IMapper mapper)
         {
             employeeRepository = _employeeRepository;
             departmentRepository = _departmentRepository;
+            this.mapper = mapper;
         }
         [HttpGet]
         public IActionResult Index(string? EmployeeSearchName)
@@ -36,21 +41,8 @@ namespace Company.PL.Controllers
         public IActionResult Create(EmployeeDTO model)
         {
             if (ModelState.IsValid)
-            {//server side validation
-                var employee = new Employee()
-                {
-                    Name = model.Name,
-                    Age = model.Age,
-                    Address = model.Address,    
-                    Email = model.Email,    
-                    Phone = model.Phone,    
-                    IsActive = model.IsActive,  
-                    IsDeleted = model.IsDeleted,    
-                    CreateAt = model.CreateAt,  
-                    HiringDate = model.HiringDate,  
-                    Salary=model.Salary,
-                    DepartmentId = model.DepartmentId,  
-                };
+            {
+                var employee = mapper.Map<Employee>(model);
                 var cnt = employeeRepository.Add(employee);
                 string message;
                 if (cnt > 0)
@@ -87,21 +79,9 @@ namespace Company.PL.Controllers
             var model = employeeRepository.Get(id.Value);
 
             if (model is null) return NotFound(new { StatusCode = 404, Message = "Employee is not found" });
-            var employee = new EmployeeDTO()
-            {
-               
-                Name = model.Name,
-                Age = model.Age,
-                Address = model.Address,
-                Email = model.Email,
-                Phone = model.Phone,
-                IsActive = model.IsActive,
-                IsDeleted = model.IsDeleted,
-                CreateAt = model.CreateAt,
-                HiringDate = model.HiringDate,
-                Salary = model.Salary,
-                DepartmentId = model.DepartmentId,  
-            };
+           
+            var employee = mapper.Map<EmployeeDTO>(model);
+
 
             return View(employee);
         }
@@ -113,21 +93,12 @@ namespace Company.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                var employee = new Employee()
-                {
-                    Id=id,
-                    Name = model.Name,
-                    Age = model.Age,
-                    Address = model.Address,
-                    Email = model.Email,
-                    Phone = model.Phone,
-                    IsActive = model.IsActive,
-                    IsDeleted = model.IsDeleted,
-                    CreateAt = model.CreateAt,
-                    HiringDate = model.HiringDate,
-                    Salary = model.Salary,
-                    DepartmentId = model.DepartmentId,  
-                };
+                
+                var employee = mapper.Map<Employee>(model);
+                employee.Id = id;
+         
+
+
                 var cnt = employeeRepository.Update(employee);
                 if (cnt > 0) return RedirectToAction(nameof(Index));               
             }

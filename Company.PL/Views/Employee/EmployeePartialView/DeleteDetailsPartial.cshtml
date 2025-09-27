@@ -25,12 +25,12 @@
         <input asp-for="Salary" class="form-control" readonly />
     </div>
    <div class="my-3 form-check">
-    <input asp-for="IsActive" class="form-check-input" disabled  />
+    <input asp-for="IsActive" class="form-check-input" readonly   />
     <label asp-for="IsActive" class="form-check-label" ></label>
     </div>
 
    <div class="my-3 form-check">
-    <input asp-for="IsDeleted" class="form-check-input" disabled />
+    <input asp-for="IsDeleted" class="form-check-input" readonly  />
     <label asp-for="IsDeleted" class="form-check-label"></label>
     </div>
     <div class="my-3">
@@ -41,7 +41,13 @@
         <label asp-for="CreateAt" class="col-form-label">CreateAt</label>@*asp for bind the input for prop*@
         <input asp-for="CreateAt" class="form-control" readonly />
     </div>
-    <div class="my-3">
-        <label asp-for="Departments" class="col-form-label">Department</label>@*asp for bind the input for prop*@
-        <input asp-for="Departments.Name" class="form-control" readonly />
-    </div>
+  <div class="my-3">
+    <label class="form-label">Department</label>
+    
+    <!-- Hidden input so DepartmentId gets posted -->
+    <input type="hidden" asp-for="DepartmentId" />
+
+    <!-- Just show the department name -->
+    <input class="form-control" value="@Model.Departments?.Name" readonly />
+</div>
+ 
