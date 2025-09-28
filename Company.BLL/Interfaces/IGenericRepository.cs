@@ -13,8 +13,8 @@ namespace Company.BLL.Interfaces
         IEnumerable<t> Search(string name);
 
         t? Get(int id);
-        int Add(t data);
-        int Update(t data);
-        int Delete(t data);
+        void Add(t data);
+        void Update(t data);
+        void Delete(t data);
     }
 }

@@ -1,7 +1,7 @@
 ﻿@model EmployeeDTO
-@inject IDepartmentRepository departmentRepository
+@inject IUnitOfWork unitOfWork
 @{
-    var department = new SelectList(departmentRepository.GetAll(), "Id", nameof(Departments.Name));
+    var department = new SelectList(unitOfWork.DepartmentRepository.GetAll(), "Id", nameof(Departments.Name));
 }
 
 <div class="card shadow-sm border-0 mb-4">

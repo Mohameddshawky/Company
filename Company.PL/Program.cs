@@ -14,10 +14,9 @@ namespace Company.PL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();//allow di for class
-            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();//allow di for class
             builder.Services.AddAutoMapper(m=>m.AddProfile(new EmployeeProfile()));
             builder.Services.AddAutoMapper(m=>m.AddProfile(new DepartmentProfile()));
+            builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
             builder.Services.AddDbContext<CompanyDbContext>(option =>
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));

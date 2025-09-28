@@ -18,16 +18,14 @@ namespace Company.BLL.Repositories
         {
             _dbContext = context;
         }
-        public int Add(t data)
+        public void Add(t data)
         {
             _dbContext.Set<t>().Add(data);
-            return _dbContext.SaveChanges();
         }
 
-        public int Delete(t data)
+        public void Delete(t data)
         {
             _dbContext.Set<t>().Remove(data);
-            return _dbContext.SaveChanges();
         }
 
         public t? Get(int id)
@@ -57,10 +55,10 @@ namespace Company.BLL.Repositories
                 return _dbContext.Departments.Where(x => x.Name.ToLower().Contains(name.ToLower())).ToList() as IEnumerable<t>;
         }
 
-        public int Update(t data)
+        public void Update(t data)
         {
             _dbContext.Set<t>().Update(data);
-            return _dbContext.SaveChanges();
+          
         }
     }
 }

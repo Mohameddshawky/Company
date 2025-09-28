@@ -11,13 +11,15 @@ namespace Company.PL.Controllers
     //mvc controller
     public class DepartmentController : Controller
     {
-        private readonly IDepartmentRepository departmentRepository;
+        private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
-        public DepartmentController(IDepartmentRepository _departmentRepository,
+        public DepartmentController(
+            IUnitOfWork unitOfWork,
             IMapper mapper)
         {
-            departmentRepository = _departmentRepository;
+            
+            this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
         [HttpGet]
@@ -25,9 +27,9 @@ namespace Company.PL.Controllers
         {
             IEnumerable<Departments> departments;
             if(string.IsNullOrEmpty(DepartmentSearchName))  
-                departments=departmentRepository.GetAll().ToList();
+                departments=unitOfWork.DepartmentRepository.GetAll().ToList();
             else
-                departments = departmentRepository.Search(DepartmentSearchName).ToList();
+                departments = unitOfWork.DepartmentRepository.Search(DepartmentSearchName).ToList();
 
             return View(departments);
 
@@ -43,7 +45,8 @@ namespace Company.PL.Controllers
             if (ModelState.IsValid) {//server side validation
                 
                 var Department = mapper.Map<Departments>(model);
-               var cnt= departmentRepository.Add(Department);
+              unitOfWork.DepartmentRepository.Add(Department);
+                var cnt=unitOfWork.SaveChanges();
                 string message;
                 if (cnt > 0) {
                      message = "Department Created Successfully";
@@ -62,7 +65,7 @@ namespace Company.PL.Controllers
         {
             if (id is null) return BadRequest();
 
-            var department = departmentRepository.Get(id.Value);
+            var department = unitOfWork.DepartmentRepository.Get(id.Value);
 
             if (department is null) return NotFound(new {StatusCode=404,Message="Department is not found"});
 
@@ -75,7 +78,7 @@ namespace Company.PL.Controllers
 
             if (id is null) return BadRequest();
 
-            var department = departmentRepository.Get(id.Value);
+            var department = unitOfWork.DepartmentRepository.Get(id.Value);
 
             if (department is null) return NotFound(new { StatusCode = 404, Message = "Department is not found" });
             
@@ -95,7 +98,8 @@ namespace Company.PL.Controllers
                 
                 var Department = mapper.Map<Departments>(model);
                 Department.Id = id; 
-                var cnt = departmentRepository.Update(Department);
+                unitOfWork.DepartmentRepository.Update(Department);
+                var cnt=unitOfWork.SaveChanges();   
                 if (cnt > 0) return RedirectToAction(nameof(Index));
 
 
@@ -117,7 +121,8 @@ namespace Company.PL.Controllers
             {
                 if (id == department.Id)
                 {
-                    var cnt = departmentRepository.Delete(department);
+                    unitOfWork.DepartmentRepository.Delete(department);
+                    var cnt = unitOfWork.SaveChanges();
                     if (cnt > 0) return RedirectToAction(nameof(Index));
                 }
                 else

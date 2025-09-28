@@ -8,17 +8,14 @@ namespace Company.PL.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository employeeRepository;
-        private readonly IDepartmentRepository departmentRepository;
+        private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
         public EmployeeController(
-            IEmployeeRepository _employeeRepository,
-           IDepartmentRepository _departmentRepository,
+           IUnitOfWork unitOfWork,
            IMapper mapper)
         {
-            employeeRepository = _employeeRepository;
-            departmentRepository = _departmentRepository;
+            this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
         [HttpGet]
@@ -26,9 +23,9 @@ namespace Company.PL.Controllers
         {
             IEnumerable<Employee> employees;
             if (String.IsNullOrEmpty(EmployeeSearchName))
-                 employees = employeeRepository.GetAll().ToList();
+                 employees = unitOfWork.EmployeeRepository.GetAll().ToList();
             else
-                employees= employeeRepository.Search(EmployeeSearchName);
+                employees= unitOfWork.EmployeeRepository.Search(EmployeeSearchName);
                 return View(employees);
         }
         [HttpGet]
@@ -43,7 +40,8 @@ namespace Company.PL.Controllers
             if (ModelState.IsValid)
             {
                 var employee = mapper.Map<Employee>(model);
-                var cnt = employeeRepository.Add(employee);
+                unitOfWork.EmployeeRepository.Add(employee);
+                var cnt=unitOfWork.SaveChanges();
                 string message;
                 if (cnt > 0)
                 {
@@ -63,7 +61,7 @@ namespace Company.PL.Controllers
         {
             if (id is null) return BadRequest();
 
-            var employee = employeeRepository.Get(id.Value);
+            var employee = unitOfWork.EmployeeRepository.Get(id.Value);
 
             if (employee is null) return NotFound(new { StatusCode = 404, Message = "Employee is not found" });
 
@@ -76,7 +74,7 @@ namespace Company.PL.Controllers
 
             if (id is null) return BadRequest();
 
-            var model = employeeRepository.Get(id.Value);
+            var model = unitOfWork.EmployeeRepository.Get(id.Value);
 
             if (model is null) return NotFound(new { StatusCode = 404, Message = "Employee is not found" });
            
@@ -99,7 +97,8 @@ namespace Company.PL.Controllers
          
 
 
-                var cnt = employeeRepository.Update(employee);
+                unitOfWork.EmployeeRepository.Update(employee);
+                var cnt= unitOfWork.SaveChanges();
                 if (cnt > 0) return RedirectToAction(nameof(Index));               
             }
             return View(model);
@@ -119,7 +118,8 @@ namespace Company.PL.Controllers
             {
                 if (id == employee.Id)
                 {
-                    var cnt = employeeRepository.Delete(employee);
+                     unitOfWork.EmployeeRepository.Delete(employee);
+                    var cnt=unitOfWork.SaveChanges();
                     if (cnt > 0) return RedirectToAction(nameof(Index));
                 }
                 else
