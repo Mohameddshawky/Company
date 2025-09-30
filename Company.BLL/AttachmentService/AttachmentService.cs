@@ -30,7 +30,7 @@ namespace Company.BLL.AttachmentService
             }
             var folderpath=Path.Combine(Directory.GetCurrentDirectory(),"wwwroot","files",folderName);
 
-            var filename = $"{file.FileName}{Guid.NewGuid()}";
+            var filename = $"{Guid.NewGuid()}{file.FileName}";
 
             var filepath=Path.Combine(folderpath,filename);
 

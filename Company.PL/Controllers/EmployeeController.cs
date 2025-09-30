@@ -85,6 +85,7 @@ namespace Company.PL.Controllers
 
             if (id is null) return BadRequest();
 
+
             var model = unitOfWork.EmployeeRepository.Get(id.Value);
 
             if (model is null) return NotFound(new { StatusCode = 404, Message = "Employee is not found" });
@@ -100,8 +101,18 @@ namespace Company.PL.Controllers
         //prevent any one to request rather than client side
         public IActionResult Edit([FromRoute] int id, EmployeeDTO model)
         {
+            
             if (ModelState.IsValid)
             {
+                if (model.ImageName is not null && model.Image is not null)
+                {
+                    attachmentService.Delete(model.ImageName);
+
+                }
+                if(model.Image is not null)
+                {
+                  model.ImageName=  attachmentService.Upload(model.Image,"images");
+                }
                 
                 var employee = mapper.Map<Employee>(model);
                 employee.Id = id;
@@ -131,7 +142,9 @@ namespace Company.PL.Controllers
                 {
                      unitOfWork.EmployeeRepository.Delete(employee);
                     var cnt=unitOfWork.SaveChanges();
-                    if (cnt > 0) return RedirectToAction(nameof(Index));
+                    if (cnt > 0) {
+                        attachmentService.Delete(employee.ImageName);
+                        return RedirectToAction(nameof(Index)); }
                 }
                 else
                     return BadRequest();
