@@ -29,6 +29,7 @@ namespace Company.PL.DTos
         public int? DepartmentId { get; set; }
 
         public IFormFile? Image { get; set; }
+        [Display(Name ="Image")]
         public string? ImageName { get; set; }
 
 
