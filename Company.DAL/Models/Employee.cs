@@ -19,7 +19,7 @@ namespace Company.DAL.Models
         public DateTime HiringDate { get; set; }
         public DateTime CreateAt { get; set; }
 
-
+        public string? ImageName { get; set; }
         public Departments? Departments { get; set; }
         public int? DepartmentId { get; set; }
 

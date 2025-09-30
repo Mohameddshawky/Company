@@ -27,5 +27,10 @@ namespace Company.PL.DTos
         public DateTime CreateAt { get; set; }
         [Display(Name="Department")]
         public int? DepartmentId { get; set; }
+
+        public IFormFile? Image { get; set; }
+        public string? ImageName { get; set; }
+
+
     }
 }

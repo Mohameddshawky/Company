@@ -1,3 +1,4 @@
+using Company.BLL.AttachmentService;
 using Company.BLL.Interfaces;
 using Company.BLL.Repositories;
 using Company.DAL.Data.Contexts;
@@ -16,6 +17,7 @@ namespace Company.PL
             builder.Services.AddControllersWithViews();
             builder.Services.AddAutoMapper(m=>m.AddProfile(new EmployeeProfile()));
             builder.Services.AddAutoMapper(m=>m.AddProfile(new DepartmentProfile()));
+            builder.Services.AddScoped<IAttachmentService, AttachmentService>();
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
             builder.Services.AddDbContext<CompanyDbContext>(option =>
             {

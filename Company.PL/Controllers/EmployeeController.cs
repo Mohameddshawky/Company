@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Company.BLL.AttachmentService;
 using Company.BLL.Interfaces;
 using Company.DAL.Models;
 using Company.PL.DTos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace Company.PL.Controllers
 {
@@ -10,13 +12,16 @@ namespace Company.PL.Controllers
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IAttachmentService attachmentService;
 
         public EmployeeController(
            IUnitOfWork unitOfWork,
-           IMapper mapper)
+           IMapper mapper,
+            IAttachmentService attachmentService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.attachmentService = attachmentService;
         }
         [HttpGet]
         public IActionResult Index(string? EmployeeSearchName)
@@ -36,10 +41,16 @@ namespace Company.PL.Controllers
         }
         [HttpPost]
         public IActionResult Create(EmployeeDTO model)
-        {
+        {  
+            var employee = mapper.Map<Employee>(model);
+            if(model.Image is not null)
+            {
+               string? FileName= attachmentService.Upload(model.Image, "images");
+                employee.ImageName = FileName;
+            }
             if (ModelState.IsValid)
             {
-                var employee = mapper.Map<Employee>(model);
+             
                 unitOfWork.EmployeeRepository.Add(employee);
                 var cnt=unitOfWork.SaveChanges();
                 string message;

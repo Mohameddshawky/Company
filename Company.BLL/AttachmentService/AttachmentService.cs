@@ -7,16 +7,37 @@ using System.Threading.Tasks;
 
 namespace Company.BLL.AttachmentService
 {
-    internal class AttachmentService : IAttachmentService
+    
+    public class AttachmentService : IAttachmentService
     {
+        List<string> AllowedExtensions = [".png", ".jpg", ".jpeg"];
+
         public bool Delete(string folderPath)
         {
-            throw new NotImplementedException();
+            if (File.Exists(folderPath))
+            {
+                File.Delete(folderPath);
+                return true;
+            }
+            return false;
         }
 
         public string? Upload(IFormFile file, string folderName)
         {
-            throw new NotImplementedException();
+           var exe= Path.GetExtension(file.FileName);
+            if (!AllowedExtensions.Contains(exe)) { 
+                    return null;    
+            }
+            var folderpath=Path.Combine(Directory.GetCurrentDirectory(),"wwwroot","files",folderName);
+
+            var filename = $"{file.FileName}{Guid.NewGuid()}";
+
+            var filepath=Path.Combine(folderpath,filename);
+
+            using FileStream f = new FileStream(filepath, FileMode.Create);
+
+            file.CopyTo(f);
+            return filename;
         }
     }
 }

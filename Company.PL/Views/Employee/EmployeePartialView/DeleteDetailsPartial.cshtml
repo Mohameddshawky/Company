@@ -1,7 +1,13 @@
 ﻿@model Employee
+ 
+        <div>
+            <img width=100 height=100 src="~/files/images/@(Model.ImageName is not null?Model.ImageName:"user.png")" />
+        </div>
+        <br />
 
 <div class="row g-4">
     <div class="col-md-6">
+       
         <div class="mb-3">
             <label asp-for="Name" class="form-label fw-bold"></label>
             <input asp-for="Name" class="form-control" readonly />
