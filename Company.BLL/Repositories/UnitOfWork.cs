@@ -31,9 +31,9 @@ namespace Company.BLL.Repositories
 
         public IDepartmentRepository DepartmentRepository => _departmentRepository.Value;
 
-        public int SaveChanges()
+        public async Task<int> SaveChangesAsync()
         {
-            return _companyDbContext.SaveChanges();                             
+            return await _companyDbContext.SaveChangesAsync();                             
         }
     }
 }

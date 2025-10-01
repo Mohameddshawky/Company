@@ -18,9 +18,9 @@ namespace Company.BLL.Repositories
         {
             _dbContext = context;
         }
-        public void Add(t data)
+        public async Task AddAsync(t data)
         {
-            _dbContext.Set<t>().Add(data);
+           await _dbContext.Set<t>().AddAsync(data);
         }
 
         public void Delete(t data)
@@ -28,31 +28,31 @@ namespace Company.BLL.Repositories
             _dbContext.Set<t>().Remove(data);
         }
 
-        public t? Get(int id)
+        public async Task<t?> GetAsync(int id)
         {
             if (typeof(t) == typeof(Employee))
             {
-                return _dbContext.Employees.Include(e => e.Departments).FirstOrDefault(e=>e.Id==id) as t;
+                return await _dbContext.Employees.Include(e => e.Departments).FirstOrDefaultAsync(e=>e.Id==id) as t;
             }
             return _dbContext.Set<t>().Find(id);
         }
 
-        public IEnumerable<t> GetAll()
+        public async Task<IEnumerable<t>> GetAllAsync()
         {
             if (typeof(t) == typeof(Employee)) {
-                return _dbContext.Employees.Include(e=>e.Departments).ToList()as IEnumerable<t>;
+                return await _dbContext.Employees.Include(e=>e.Departments).ToListAsync()as IEnumerable<t>;
             }
-             return _dbContext.Set<t>().ToList();
+             return await _dbContext.Set<t>().ToListAsync();
         }
 
-        public IEnumerable<t> Search(string name)
+        public async Task<IEnumerable<t>> SearchAsync(string name)
         {
             if (typeof(t) == typeof(Employee))
             {
-                return _dbContext.Employees.Include(e => e.Departments).Where(x=>x.Name.ToLower().Contains(name.ToLower())).ToList() as IEnumerable<t>;
+                return await _dbContext.Employees.Include(e => e.Departments).Where(x=>x.Name.ToLower().Contains(name.ToLower())).ToListAsync() as IEnumerable<t>;
             }
             else
-                return _dbContext.Departments.Where(x => x.Name.ToLower().Contains(name.ToLower())).ToList() as IEnumerable<t>;
+                return await _dbContext.Departments.Where(x => x.Name.ToLower().Contains(name.ToLower())).ToListAsync() as IEnumerable<t>;
         }
 
         public void Update(t data)

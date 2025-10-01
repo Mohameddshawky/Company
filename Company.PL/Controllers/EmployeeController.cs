@@ -5,6 +5,7 @@ using Company.DAL.Models;
 using Company.PL.DTos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
+using System.Threading.Tasks;
 
 namespace Company.PL.Controllers
 {
@@ -24,13 +25,13 @@ namespace Company.PL.Controllers
             this.attachmentService = attachmentService;
         }
         [HttpGet]
-        public IActionResult Index(string? EmployeeSearchName)
+        public async Task<IActionResult> Index(string? EmployeeSearchName)
         {
             IEnumerable<Employee> employees;
             if (String.IsNullOrEmpty(EmployeeSearchName))
-                 employees = unitOfWork.EmployeeRepository.GetAll().ToList();
+                employees = await unitOfWork.EmployeeRepository.GetAllAsync();
             else
-                employees= unitOfWork.EmployeeRepository.Search(EmployeeSearchName);
+                employees = await unitOfWork.EmployeeRepository.SearchAsync(EmployeeSearchName);
                 return View(employees);
         }
         [HttpGet]
@@ -40,7 +41,7 @@ namespace Company.PL.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(EmployeeDTO model)
+        public async Task<IActionResult> Create(EmployeeDTO model)
         {  
             var employee = mapper.Map<Employee>(model);
             if(model.Image is not null)
@@ -51,8 +52,8 @@ namespace Company.PL.Controllers
             if (ModelState.IsValid)
             {
              
-                unitOfWork.EmployeeRepository.Add(employee);
-                var cnt=unitOfWork.SaveChanges();
+                await unitOfWork.EmployeeRepository.AddAsync(employee);
+                var cnt=await unitOfWork.SaveChangesAsync();
                 string message;
                 if (cnt > 0)
                 {
@@ -68,11 +69,11 @@ namespace Company.PL.Controllers
             return View(model);
         }
         [HttpGet]
-        public IActionResult Details(int? id, string ViewName = "Details")
+        public async Task<IActionResult> Details(int? id, string ViewName = "Details")
         {
             if (id is null) return BadRequest();
 
-            var employee = unitOfWork.EmployeeRepository.Get(id.Value);
+            var employee = await unitOfWork.EmployeeRepository.GetAsync(id.Value);
 
             if (employee is null) return NotFound(new { StatusCode = 404, Message = "Employee is not found" });
 
@@ -80,13 +81,13 @@ namespace Company.PL.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
 
             if (id is null) return BadRequest();
 
 
-            var model = unitOfWork.EmployeeRepository.Get(id.Value);
+            var model = await unitOfWork.EmployeeRepository.GetAsync(id.Value);
 
             if (model is null) return NotFound(new { StatusCode = 404, Message = "Employee is not found" });
            
@@ -99,7 +100,7 @@ namespace Company.PL.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]//prefer for any post action
         //prevent any one to request rather than client side
-        public IActionResult Edit([FromRoute] int id, EmployeeDTO model)
+        public async Task<IActionResult> Edit([FromRoute] int id, EmployeeDTO model)
         {
             
             if (ModelState.IsValid)
@@ -120,28 +121,28 @@ namespace Company.PL.Controllers
 
 
                 unitOfWork.EmployeeRepository.Update(employee);
-                var cnt= unitOfWork.SaveChanges();
+                var cnt= await unitOfWork.SaveChangesAsync();
                 if (cnt > 0) return RedirectToAction(nameof(Index));               
             }
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
 
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute] int id, Employee employee)
+        public async Task<IActionResult> Delete([FromRoute] int id, Employee employee)
         {
             if (ModelState.IsValid)
             {
                 if (id == employee.Id)
                 {
                      unitOfWork.EmployeeRepository.Delete(employee);
-                    var cnt=unitOfWork.SaveChanges();
+                    var cnt=await unitOfWork.SaveChangesAsync();
                     if (cnt > 0) {
                         attachmentService.Delete(employee.ImageName);
                         return RedirectToAction(nameof(Index)); }

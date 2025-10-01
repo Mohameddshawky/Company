@@ -10,6 +10,6 @@ namespace Company.BLL.Interfaces
     {
         public IEmployeeRepository EmployeeRepository { get;  }
         public IDepartmentRepository DepartmentRepository { get;  }
-        public int SaveChanges();
+        public Task<int> SaveChangesAsync();
     }
 }
