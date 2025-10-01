@@ -106,7 +106,7 @@ namespace Company.PL.Controllers
             {
                 if (model.ImageName is not null && model.Image is not null)
                 {
-                    attachmentService.Delete(model.ImageName);
+                    var ch=attachmentService.Delete(model.ImageName);
 
                 }
                 if(model.Image is not null)

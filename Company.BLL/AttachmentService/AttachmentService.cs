@@ -12,11 +12,13 @@ namespace Company.BLL.AttachmentService
     {
         List<string> AllowedExtensions = [".png", ".jpg", ".jpeg"];
 
-        public bool Delete(string folderPath)
+        public bool Delete(string imagename)
         {
-            if (File.Exists(folderPath))
+            var folderpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "files","images", imagename);
+
+            if (File.Exists(folderpath))
             {
-                File.Delete(folderPath);
+                File.Delete(folderpath);
                 return true;
             }
             return false;
