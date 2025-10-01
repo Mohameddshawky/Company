@@ -1,34 +1,37 @@
 ﻿using AutoMapper;
+using Company.BLL.AttachmentService;
 using Company.BLL.Interfaces;
 using Company.DAL.Models;
 using Company.PL.DTos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Constraints;
+using System.Threading.Tasks;
 
 namespace Company.PL.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository employeeRepository;
-        private readonly IDepartmentRepository departmentRepository;
+        private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IAttachmentService attachmentService;
 
         public EmployeeController(
-            IEmployeeRepository _employeeRepository,
-           IDepartmentRepository _departmentRepository,
-           IMapper mapper)
+           IUnitOfWork unitOfWork,
+           IMapper mapper,
+            IAttachmentService attachmentService)
         {
-            employeeRepository = _employeeRepository;
-            departmentRepository = _departmentRepository;
+            this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.attachmentService = attachmentService;
         }
         [HttpGet]
-        public IActionResult Index(string? EmployeeSearchName)
+        public async Task<IActionResult> Index(string? EmployeeSearchName)
         {
             IEnumerable<Employee> employees;
             if (String.IsNullOrEmpty(EmployeeSearchName))
-                 employees = employeeRepository.GetAll().ToList();
+                employees = await unitOfWork.EmployeeRepository.GetAllAsync();
             else
-                employees= employeeRepository.Search(EmployeeSearchName);
+                employees = await unitOfWork.EmployeeRepository.SearchAsync(EmployeeSearchName);
                 return View(employees);
         }
         [HttpGet]
@@ -38,12 +41,19 @@ namespace Company.PL.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(EmployeeDTO model)
-        {
+        public async Task<IActionResult> Create(EmployeeDTO model)
+        {  
+            var employee = mapper.Map<Employee>(model);
+            if(model.Image is not null)
+            {
+               string? FileName= attachmentService.Upload(model.Image, "images");
+                employee.ImageName = FileName;
+            }
             if (ModelState.IsValid)
             {
-                var employee = mapper.Map<Employee>(model);
-                var cnt = employeeRepository.Add(employee);
+             
+                await unitOfWork.EmployeeRepository.AddAsync(employee);
+                var cnt=await unitOfWork.SaveChangesAsync();
                 string message;
                 if (cnt > 0)
                 {
@@ -59,11 +69,11 @@ namespace Company.PL.Controllers
             return View(model);
         }
         [HttpGet]
-        public IActionResult Details(int? id, string ViewName = "Details")
+        public async Task<IActionResult> Details(int? id, string ViewName = "Details")
         {
             if (id is null) return BadRequest();
 
-            var employee = employeeRepository.Get(id.Value);
+            var employee = await unitOfWork.EmployeeRepository.GetAsync(id.Value);
 
             if (employee is null) return NotFound(new { StatusCode = 404, Message = "Employee is not found" });
 
@@ -71,12 +81,13 @@ namespace Company.PL.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
 
             if (id is null) return BadRequest();
 
-            var model = employeeRepository.Get(id.Value);
+
+            var model = await unitOfWork.EmployeeRepository.GetAsync(id.Value);
 
             if (model is null) return NotFound(new { StatusCode = 404, Message = "Employee is not found" });
            
@@ -89,38 +100,52 @@ namespace Company.PL.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]//prefer for any post action
         //prevent any one to request rather than client side
-        public IActionResult Edit([FromRoute] int id, EmployeeDTO model)
+        public async Task<IActionResult> Edit([FromRoute] int id, EmployeeDTO model)
         {
+            
             if (ModelState.IsValid)
             {
+                if (model.ImageName is not null && model.Image is not null)
+                {
+                    var ch=attachmentService.Delete(model.ImageName);
+
+                }
+                if(model.Image is not null)
+                {
+                  model.ImageName=  attachmentService.Upload(model.Image,"images");
+                }
                 
                 var employee = mapper.Map<Employee>(model);
                 employee.Id = id;
          
 
 
-                var cnt = employeeRepository.Update(employee);
+                unitOfWork.EmployeeRepository.Update(employee);
+                var cnt= await unitOfWork.SaveChangesAsync();
                 if (cnt > 0) return RedirectToAction(nameof(Index));               
             }
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
 
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute] int id, Employee employee)
+        public async Task<IActionResult> Delete([FromRoute] int id, Employee employee)
         {
             if (ModelState.IsValid)
             {
                 if (id == employee.Id)
                 {
-                    var cnt = employeeRepository.Delete(employee);
-                    if (cnt > 0) return RedirectToAction(nameof(Index));
+                     unitOfWork.EmployeeRepository.Delete(employee);
+                    var cnt=await unitOfWork.SaveChangesAsync();
+                    if (cnt > 0) {
+                        attachmentService.Delete(employee.ImageName);
+                        return RedirectToAction(nameof(Index)); }
                 }
                 else
                     return BadRequest();

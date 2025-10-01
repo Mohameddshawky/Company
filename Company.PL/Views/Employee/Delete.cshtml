@@ -11,10 +11,16 @@
 <form asp-action="Delete">
        <partial name="EmployeePartialView/DeleteDetailsPartial"/>
 
+     <input asp-for="ImageName"  hidden  />
 
-     <div class="mt-4">    
-    <input type="submit" value="Delete"   class="btn btn-danger" />
-    <a asp-controller="Employee" asp-action="Index" class="btn btn-light">Back To List</a>
-      </div>
+    <div class="mt-4 d-flex justify-content-end gap-2">
+    <button type="submit" class="btn btn-danger px-4">
+        <i class="bi bi-trash3-fill me-2"></i> Delete
+    </button>
+    <a asp-controller="Employee" asp-action="Index" class="btn btn-outline-secondary px-4">
+        <i class="bi bi-arrow-left-circle me-2"></i> Back to List
+    </a>
+</div>
+
 </form>
 

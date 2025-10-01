@@ -1,69 +1,91 @@
-﻿
-    @model EmployeeDTO
-    @inject IDepartmentRepository departmentRepository
+﻿@model EmployeeDTO
+@inject IUnitOfWork unitOfWork
 @{
-    var department = new SelectList(departmentRepository.GetAll(), "Id", nameof(Departments.Name));
+    var department = new SelectList(await unitOfWork.DepartmentRepository.GetAllAsync(), "Id", nameof(Departments.Name));
 }
-<div class="my-3">
-        <label asp-for="Name" class="col-form-label">Name</label>@*asp for bind the input for prop*@
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
 
-    </div>
-    <div class="my-3">
-        <label asp-for="Age" class="col-form-label">Age</label>@*asp for bind the input for prop*@
-        <input asp-for="Age" class="form-control" />
-        <span asp-validation-for="Age" class="text-danger"></span>
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <div class="row g-3">
+            
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input asp-for="Name" class="form-control" placeholder="Full Name" />
+                    <label asp-for="Name"></label>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
 
-    </div>
-    <div class="my-3">
-        <label asp-for="Email" class="col-form-label">Email</label>@*asp for bind the input for prop*@
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
+                <div class="form-floating mb-3">
+                    <input asp-for="Age" class="form-control" placeholder="Age" />
+                    <label asp-for="Age"></label>
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
 
-    </div>
-    <div class="my-3">
-        <label asp-for="Address" class="col-form-label">Address</label>@*asp for bind the input for prop*@
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
+                <div class="form-floating mb-3">
+                    <input asp-for="Email" class="form-control" placeholder="Email" />
+                    <label asp-for="Email"></label>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
 
-    </div>
-    <div class="my-3">
-        <label asp-for="Phone" class="col-form-label">Phone</label>@*asp for bind the input for prop*@
-        <input asp-for="Phone" class="form-control" />
-        <span asp-validation-for="Phone" class="text-danger"></span>
+                <div class="form-floating mb-3">
+                    <input asp-for="Phone" class="form-control" placeholder="Phone" />
+                    <label asp-for="Phone"></label>
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
 
-    </div>
-    <div class="my-3">
-        <label asp-for="Salary" class="col-form-label">Salary</label>@*asp for bind the input for prop*@
-        <input asp-for="Salary" class="form-control" />
-        <span asp-validation-for="Salary" class="text-danger"></span>
+             
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input asp-for="Address" class="form-control" placeholder="Address" />
+                    <label asp-for="Address"></label>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
 
-    </div>
-   <div class="my-3 form-check">
-    <input asp-for="IsActive" class="form-check-input" />
-    <label asp-for="IsActive" class="form-check-label"></label>
-    </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Salary" class="form-control" placeholder="Salary" />
+                    <label asp-for="Salary"></label>
+                    <span asp-validation-for="Salary" class="text-danger"></span>
+                </div>
 
-   <div class="my-3 form-check">
-    <input asp-for="IsDeleted" class="form-check-input" />
-    <label asp-for="IsDeleted" class="form-check-label"></label>
+                <div class="form-floating mb-3">
+                    <select asp-for="DepartmentId" asp-items="department" class="form-select">
+                        <option value="">-- Select Department --</option>
+                    </select>
+                    <label asp-for="DepartmentId"></label>
+                    <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="form-check form-switch mt-3">
+            <input asp-for="IsActive" class="form-check-input" />
+            <label asp-for="IsActive" class="form-check-label"></label>
+        </div>
+
+        <div class="form-check form-switch mb-3">
+            <input asp-for="IsDeleted" class="form-check-input" />
+            <label asp-for="IsDeleted" class="form-check-label"></label>
+        </div>
+
+         
+        <div class="row g-3">
+            <div class="col-md-6 form-floating">
+                <input asp-for="HiringDate" class="form-control" type="date" />
+                <label asp-for="HiringDate"></label>
+                <span asp-validation-for="HiringDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 form-floating">
+                <input asp-for="CreateAt" class="form-control" type="date" />
+                <label asp-for="CreateAt"></label>
+                <span asp-validation-for="CreateAt" class="text-danger"></span>
+            </div>
+             <div class="form-floating mb-3">
+                    <input asp-for="Image" class="form-control"  />
+                    <label asp-for="Image"></label>
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+        </div>
     </div>
-  <div class="my-3">
-    <label class="form-label" asp-for="DepartmentId"></label>
-    <select asp-for="DepartmentId" asp-items="department" class="form-control">
-        <option value="@null">-- Select Department --</option>
-    </select>
-    <span asp-validation-for="DepartmentId" class="text-danger"></span>
 </div>
-    <div class="my-3">
-        <label asp-for="HiringDate" class="col-form-label">HiringDate</label>@*asp for bind the input for prop*@
-        <input asp-for="HiringDate" class="form-control" />
-        <span asp-validation-for="HiringDate" class="text-danger"></span>
-    </div>
-    <div class="my-3">
-        <label asp-for="CreateAt" class="col-form-label">CreateAt</label>@*asp for bind the input for prop*@
-        <input asp-for="CreateAt" class="form-control" />
-        <span asp-validation-for="CreateAt" class="text-danger"></span>
-
-    </div>
