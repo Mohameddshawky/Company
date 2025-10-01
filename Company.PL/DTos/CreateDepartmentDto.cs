@@ -8,6 +8,7 @@ namespace Company.PL.DTos
 
         public string Name { get; set; }
         [Required(ErrorMessage = "Code is Required")]
+        [Range(1, int.MaxValue, ErrorMessage = "Code must be a positive number")]
         public string Code { get; set; }
         [Required]
 

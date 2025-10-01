@@ -6,16 +6,25 @@
 
 <h1>Details Page</h1>
 
+
+     
+
 <br />
 <br />
 
     <partial name="EmployeePartialView/DeleteDetailsPartial"/>
     
    
-    <div class="mt-4">    
-    <a asp-controller="Employee" asp-action="Edit"  asp-route-id="@Model.Id"   class="btn btn-warning">Edit</a>
-    <a asp-controller="Employee" asp-action="Index" class="btn btn-light">Back To List</a>
+<div class="mt-4 d-flex justify-content-end gap-2">
+    <a asp-controller="Employee" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning px-4">
+        <i class="bi bi-pencil-square me-2"></i> Edit
+    </a>
+    <a asp-controller="Employee" asp-action="Index" class="btn btn-outline-secondary px-4">
+        <i class="bi bi-arrow-left-circle me-2"></i> Back to List
+    </a>
 </div>
+
+
 </div>
 
 
