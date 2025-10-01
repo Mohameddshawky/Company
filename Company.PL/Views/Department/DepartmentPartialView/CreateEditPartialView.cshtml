@@ -1,19 +1,29 @@
 ﻿@model CreateDepartmentDto
-  <div class="my-3">
-        <label asp-for="Code" class="col-form-label">Code</label>
-        <input asp-for="Code" class="form-control" />
-        <span asp-validation-for="Code" class="text-danger"></span>
 
-    </div>
-    <div class="my-3">
-        <label asp-for="Name" class="col-form-label">Name</label>@*asp for bind the input for prop*@
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input asp-for="Code" class="form-control" placeholder="Department Code" />
+                    <label asp-for="Code"></label>
+                    <span asp-validation-for="Code" class="text-danger"></span>
+                </div>
+            </div>
 
-    </div>
-    <div class="my-3">
-        <label asp-for="CreateAt" class="col-form-label">Code</label>
-        <input asp-for="CreateAt" class="form-control" />
-        <span asp-validation-for="CreateAt" class="text-danger"></span>
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input asp-for="Name" class="form-control" placeholder="Department Name" />
+                    <label asp-for="Name"></label>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
 
-    </div>
+        <div class="row g-3">
+            <div class="col-md-6 form-floating mb-3">
+                <input asp-for="CreateAt" type="date" class="form-control" placeholder="Created At" />
+                <label asp-for="CreateAt"></label>
+                <span asp-validation-for="CreateAt" class="text-danger"></span>
+            </div>
+        </div>
