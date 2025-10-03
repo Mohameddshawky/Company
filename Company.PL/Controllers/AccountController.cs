@@ -2,6 +2,7 @@
 using Company.PL.DTos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Company.PL.Controllers
 {
@@ -52,5 +53,33 @@ namespace Company.PL.Controllers
             else
                 return View(model);  
         }
+
+        [HttpGet]
+        public IActionResult SignIn()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> SignIn(SignInDTo model)
+        {
+            if (ModelState.IsValid) {
+            
+                var user=await UserManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    var f=await UserManager.CheckPasswordAsync(user, model.Password);
+                    if (f) {
+                        return RedirectToAction(nameof(HomeController.Index), "Home");
+                    }
+                }
+                ModelState.AddModelError("", "Invalid Login");
+                return View(model);
+
+            }
+            else
+                return View(model);
+        }
+
     }
+
 }
