@@ -1,0 +1,56 @@
+﻿using Company.DAL.Models.Identitymodule;
+using Company.PL.DTos;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Company.PL.Controllers
+{
+    public class AccountController : Controller
+    {
+        public UserManager<AppUser> UserManager { get; }
+
+        public AccountController(UserManager<AppUser> userManager)
+        {
+            UserManager = userManager;
+        }
+
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Register(RegisterDto model)
+        {
+
+            if (ModelState.IsValid) {
+                var user = new AppUser()
+                {
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    Firstname = model.FirstName,
+                    Lastname = model.LastName,
+
+                };
+
+               var res=UserManager.CreateAsync(user, model.Password).Result;
+                if (res.Succeeded)
+                {
+                    return RedirectToAction("login");
+                }
+                else
+                {
+                    foreach (var item in res.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+                    return View(model);
+                }
+                
+            }
+            else
+                return View(model);  
+        }
+    }
+}

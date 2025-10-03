@@ -2,7 +2,9 @@ using Company.BLL.AttachmentService;
 using Company.BLL.Interfaces;
 using Company.BLL.Repositories;
 using Company.DAL.Data.Contexts;
+using Company.DAL.Models.Identitymodule;
 using Company.PL.Mapping;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Company.PL
@@ -23,6 +25,9 @@ namespace Company.PL
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));
             });
+            builder.Services.AddIdentity<AppUser, IdentityRole>()
+                            .AddEntityFrameworkStores<CompanyDbContext>()
+                ;
 
             var app = builder.Build();
 
@@ -43,7 +48,7 @@ namespace Company.PL
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Register}/{id?}");
 
             app.Run();
         }

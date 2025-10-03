@@ -1,0 +1,50 @@
+﻿@model RegisterDto
+@{
+    ViewData["title"] = "Register";
+    Layout = "~/Views/Shared/AuthLayout.cshtml";
+}
+
+<h1>Register</h1>
+
+
+
+	<!-- main -->
+	<div class="main-w3layouts wrapper">
+		<h1>Creative SignUp Form</h1>
+		<div class="main-agileinfo">
+			<div class="agileits-top">
+				<form asp-action="Register" method="post">
+					<div asp-validation-summary="ModelOnly" class="text-danger">
+
+					</div>
+					<input asp-for="UserName"  placeholder="Username" >
+					<span asp-validation-for="UserName" class="text-danger"></span>
+					<br />
+					<input asp-for="FirstName"  placeholder="FirstName" >
+					<span asp-validation-for="FirstName" class="text-danger"></span>
+					<br />
+					<input asp-for="LastName"  placeholder="LastName" >
+					<span asp-validation-for="LastName" class="text-danger"></span>
+					<br />
+					<input asp-for="Email"  placeholder="Email" >
+					<span asp-validation-for="Email" class="text-danger"></span>
+					<br />
+					<input asp-for="Password"  placeholder="Password" >
+					<span asp-validation-for="Password" class="text-danger"></span>
+					<br />
+					<input asp-for="confirmPassword"  placeholder="confirmPassword" >
+					<span asp-validation-for="confirmPassword" class="text-danger"></span>
+					<br />
+
+					<div class="wthree-text">
+						<label class="anim">
+							<input asp-for="IsAgreed" class="checkbox" >
+							<span>I Agree To The Terms & Conditions</span>
+						</label>
+						<div class="clear"> </div>
+					</div>
+					<input type="submit" value="SIGNUP">
+				</form>
+				<p>Do you have an Account? <a asp-action="Login"> Login Now!</a></p>
+			</div>
+		</div>
