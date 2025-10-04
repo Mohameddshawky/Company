@@ -9,10 +9,15 @@ namespace Company.PL.Controllers
     public class AccountController : Controller
     {
         public UserManager<AppUser> UserManager { get; }
+        public SignInManager<AppUser> SignInManager { get; }
 
-        public AccountController(UserManager<AppUser> userManager)
+        public AccountController(
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager
+            )
         {
             UserManager = userManager;
+            SignInManager = signInManager;
         }
 
 
@@ -69,7 +74,9 @@ namespace Company.PL.Controllers
                 {
                     var f=await UserManager.CheckPasswordAsync(user, model.Password);
                     if (f) {
-                        return RedirectToAction(nameof(HomeController.Index), "Home");
+                       var res= await SignInManager.PasswordSignInAsync(user, model.Password, model.RemberMe, false);
+                        if (res.Succeeded)                 
+                            return RedirectToAction(nameof(HomeController.Index), "Home");
                     }
                 }
                 ModelState.AddModelError("", "Invalid Login");
@@ -78,6 +85,14 @@ namespace Company.PL.Controllers
             }
             else
                 return View(model);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> SignOut()
+        {
+           await  SignInManager.SignOutAsync();
+            return RedirectToAction(nameof(SignIn));
         }
 
     }

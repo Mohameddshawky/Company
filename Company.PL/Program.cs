@@ -26,9 +26,13 @@ namespace Company.PL
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));
             });
             builder.Services.AddIdentity<AppUser, IdentityRole>()
-                            .AddEntityFrameworkStores<CompanyDbContext>()
-                ;
+                            .AddEntityFrameworkStores<CompanyDbContext>();
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/SignIn"; 
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -44,7 +48,8 @@ namespace Company.PL
 
             app.UseRouting();
 
-           
+            app.UseAuthentication();
+            app.UseAuthorization(); 
 
             app.MapControllerRoute(
                 name: "default",
