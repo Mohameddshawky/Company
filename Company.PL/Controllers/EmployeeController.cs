@@ -42,6 +42,13 @@ namespace Company.PL.Controllers
            
             return View();
         }
+        //[HttpGet]
+        //public IActionResult DeletePhoto()
+        //{
+
+            
+        //}
+
         [HttpPost]
         public async Task<IActionResult> Create(EmployeeDTO model)
         {  
