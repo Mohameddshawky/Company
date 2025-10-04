@@ -1,0 +1,101 @@
+﻿/* Background */
+body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* darker modern gradient */
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Main container */
+.main-agileinfo {
+    width: 360px;
+    background: rgba(255, 255, 255, 0.05); /* subtle glass effect */
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    text-align: center;
+    padding: 2.5em;
+}
+
+/* Headings */
+h1 {
+    font-size: 1.8em;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 1.5em;
+    color: #fff;
+}
+
+/* Input groups */
+.input-group {
+    position: relative;
+    margin-bottom: 1.2em;
+}
+
+    .input-group input {
+        background: rgba(255, 255, 255, 0.15);
+        border: none;
+        border-radius: 30px;
+        padding: 0.9em 3em 0.9em 1.2em;
+        width: 100%;
+        color: #fff;
+        font-size: 0.95em;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .input-group input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+
+    /* Input icons */
+    .input-group i {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fff;
+        font-size: 1em;
+    }
+
+/* Button */
+input[type="submit"] {
+    background: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 0.9em;
+    width: 100%;
+    color: #2c5364;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1em;
+}
+
+    input[type="submit"]:hover {
+        background: #f1f1f1;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+/* Links */
+.agileits-top p a {
+    color: #ffdfdf;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+    .agileits-top p a:hover {
+        color: #ff758c;
+    }

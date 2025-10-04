@@ -3,6 +3,7 @@ using Company.BLL.Interfaces;
 using Company.BLL.Repositories;
 using Company.DAL.Models;
 using Company.PL.DTos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ using System.Threading.Tasks;
 namespace Company.PL.Controllers
 {
     //mvc controller
+    //[AllowAnonymous] by defualt
+    [Authorize]                                                 
     public class DepartmentController : Controller
     {
         private readonly IUnitOfWork unitOfWork;

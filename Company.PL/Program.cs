@@ -2,7 +2,9 @@ using Company.BLL.AttachmentService;
 using Company.BLL.Interfaces;
 using Company.BLL.Repositories;
 using Company.DAL.Data.Contexts;
+using Company.DAL.Models.Identitymodule;
 using Company.PL.Mapping;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Company.PL
@@ -23,7 +25,14 @@ namespace Company.PL
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));
             });
+            builder.Services.AddIdentity<AppUser, IdentityRole>()
+                            .AddEntityFrameworkStores<CompanyDbContext>();
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/SignIn"; 
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -39,11 +48,12 @@ namespace Company.PL
 
             app.UseRouting();
 
-           
+            app.UseAuthentication();
+            app.UseAuthorization(); 
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Register}/{id?}");
 
             app.Run();
         }

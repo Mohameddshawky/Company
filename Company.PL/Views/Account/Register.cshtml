@@ -1,0 +1,63 @@
+﻿@model RegisterDto
+@{
+    ViewData["title"] = "Register";
+    Layout = "~/Views/Shared/AuthLayout.cshtml";
+}
+
+<div class="main-w3layouts wrapper">
+    <h1>Creative SignUp Form</h1>
+    <div class="main-agileinfo">
+        <div class="agileits-top">
+            <form asp-action="Register" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="input-group">
+                    <input asp-for="UserName" placeholder="Username" />
+                    <i class="fa fa-user"></i>
+                </div>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+
+                <div class="input-group">
+                    <input asp-for="FirstName" placeholder="First Name" />
+                    <i class="fa fa-id-card"></i>
+                </div>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+
+                <div class="input-group">
+                    <input asp-for="LastName" placeholder="Last Name" />
+                    <i class="fa fa-id-card"></i>
+                </div>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+
+                <div class="input-group">
+                    <input asp-for="Email" placeholder="Email" />
+                    <i class="fa fa-envelope"></i>
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+
+                <div class="input-group">
+                    <input asp-for="Password" type="password" placeholder="Password" />
+                    <i class="fa fa-lock"></i>
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+
+                <div class="input-group">
+                    <input asp-for="confirmPassword" type="password" placeholder="Confirm Password" />
+                    <i class="fa fa-lock"></i>
+                </div>
+                <span asp-validation-for="confirmPassword" class="text-danger"></span>
+
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsAgreed" class="checkbox" />
+                        I Agree To The Terms & Conditions
+                    </label>
+                </div>
+
+                <input type="submit" value="SIGNUP" />
+            </form>
+
+            <p>Do you have an Account? <a asp-action="SignIn">Login Now!</a></p>
+        </div>
+    </div>
+</div>
