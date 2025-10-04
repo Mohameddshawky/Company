@@ -3,12 +3,14 @@ using Company.BLL.AttachmentService;
 using Company.BLL.Interfaces;
 using Company.DAL.Models;
 using Company.PL.DTos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
 using System.Threading.Tasks;
 
 namespace Company.PL.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly IUnitOfWork unitOfWork;

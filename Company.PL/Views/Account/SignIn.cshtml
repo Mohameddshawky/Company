@@ -1,0 +1,39 @@
+﻿@model SignInDTo
+@{
+    ViewData["title"] = "SignIn";
+    Layout = "~/Views/Shared/AuthLayout.cshtml";
+}
+
+<div class="main-w3layouts wrapper">
+    <h1>Creative SignIn Form</h1>
+    <div class="main-agileinfo">
+        <div class="agileits-top">
+            <form asp-action="SignIn" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="input-group">
+                    <input asp-for="Email" placeholder="Email" />
+                    <i class="fa fa-envelope"></i>
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+
+                <div class="input-group">
+                    <input asp-for="Password" type="password" placeholder="Password" />
+                    <i class="fa fa-lock"></i>
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="RemberMe" class="checkbox" />
+                        Remember Me
+                    </label>
+                </div>
+
+                <input type="submit" value="SIGNIN" />
+            </form>
+
+            <p>Don’t have an Account? <a asp-action="Register">Create New Account</a></p>
+        </div>
+    </div>
+</div>
