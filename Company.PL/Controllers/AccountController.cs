@@ -49,7 +49,7 @@ namespace Company.PL.Controllers
                var res=UserManager.CreateAsync(user, model.Password).Result;
                 if (res.Succeeded)
                 {
-                    return RedirectToAction("login");
+                    return RedirectToAction("SignIn");
                 }
                 else
                 {
@@ -140,6 +140,33 @@ namespace Company.PL.Controllers
         }
         [HttpGet]
         public IActionResult CheckYourInbox()=>View();
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token) {
+            TempData["email"]=email;
+            TempData["token"]=token;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var email=TempData["email"] as string;
+                var token=TempData["token"] as string;
+                var user= await UserManager.FindByEmailAsync(email);
+                if (user != null)
+                {
+                   var res= await UserManager.ResetPasswordAsync(user, token,model.NewPassword);
+                    if (res.Succeeded) return RedirectToAction("SignIn");
+                }                   
+              }
+            ModelState.AddModelError("", "Invalid Operation");
+            return View(model);  
+
+
+        }
 
     }
 

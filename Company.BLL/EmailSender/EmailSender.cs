@@ -16,7 +16,8 @@ namespace Company.BLL.EmailSender
         {
             var client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;
-            client.Credentials = new NetworkCredential("shawky1mohamed2@gmail.com", "Gv8#kL29@rTf!Xz");
+            //qzumlwlotmyfzdgw
+            client.Credentials = new NetworkCredential("shawky1mohamed2@gmail.com", "qzumlwlotmyfzdgw");
             client.Send("shawky1mohamed2@gmail.com", email.To, email.Subject, email.Body);
         }
     }
