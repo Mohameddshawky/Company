@@ -1,0 +1,38 @@
+﻿@model UserDto
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<h1 class="my-5 w-75">User Details</h1>
+
+    <form asp-action="Delete" method="post" class="mt-4 d-flex justify-content-end gap-2">
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active p-4 border" id="general" role="tabpanel" aria-labelledby="general-tab">
+        <div class="row">
+            <div class="form-group mb-3">
+                <label asp-for="Id"></label>
+                <input asp-for="Id" class="form-control" readonly />
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" readonly />
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control" readonly />
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" readonly />
+            </div>
+        </div>
+    </div>
+
+ 
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger px-4">
+            <i class="bi bi-trash3-fill me-2"></i> Delete
+        </button>
+        <a asp-action="Index" class="btn btn-outline-dark">Back To List</a>
+    </form>
+</div>
