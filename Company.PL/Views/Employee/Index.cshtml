@@ -55,7 +55,9 @@
             {
                 <tr>
                     <td>
-                        <img class="rounded" width=80 height=80 src="~/files/images/@(item.ImageName is not null?item.ImageName :"user.png")"  class="image-fluid rounded-circle"  />
+                    <img src="~/files/images/@(item.ImageName is not null?item.ImageName:"User.png" )"alt="Image"
+                    class="rounded-circle shadow-sm border"
+                    style="width: 70px; height: 70px; object-fit: cover;" />
                     </td>
                     <td>@item.Name</td>
                     <td>@item.Age</td>
@@ -88,7 +90,7 @@
                     <td>@item.HiringDate</td>
                     <td>@item.CreateAt</td>
                     <td>@item.Departments?.Name </td>
-                    <partial name="DepartmentEmployeePartial" model="@item.Id" />
+                    <partial name="ButtonsPartialView" model="@item.Id.ToString()" />
                 </tr>
             }
             

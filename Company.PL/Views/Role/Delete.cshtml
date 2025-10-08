@@ -1,0 +1,29 @@
+﻿@model RoleDto
+@{
+    ViewData["Title"] = "Delete Role";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="my-5">Delete Role</h1>
+
+<form asp-action="Delete" method="post" class="w-75 mx-auto">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label asp-for="Id" class="form-label fw-bold"></label>
+            <input asp-for="Id" class="form-control bg-light" readonly />
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Name" class="form-label fw-bold"></label>
+            <input asp-for="Name" class="form-control bg-light" readonly />
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-4 gap-3">
+        <button type="submit" class="btn btn-danger px-4 shadow-sm">
+            <i class="bi bi-trash3-fill me-2"></i> Delete
+        </button>
+        <a asp-action="Index" class="btn btn-secondary px-4 shadow-sm">
+            <i class="bi bi-arrow-left-circle me-2"></i> Back To List
+        </a>
+    </div>
+</form>

@@ -1,4 +1,5 @@
 using Company.BLL.AttachmentService;
+using Company.BLL.EmailSender;
 using Company.BLL.Interfaces;
 using Company.BLL.Repositories;
 using Company.DAL.Data.Contexts;
@@ -21,12 +22,13 @@ namespace Company.PL
             builder.Services.AddAutoMapper(m=>m.AddProfile(new DepartmentProfile()));
             builder.Services.AddScoped<IAttachmentService, AttachmentService>();
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+            builder.Services.AddScoped<IEmailSender,EmailSender>();
             builder.Services.AddDbContext<CompanyDbContext>(option =>
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));
             });
             builder.Services.AddIdentity<AppUser, IdentityRole>()
-                            .AddEntityFrameworkStores<CompanyDbContext>();
+                            .AddEntityFrameworkStores<CompanyDbContext>().AddDefaultTokenProviders();
 
             builder.Services.ConfigureApplicationCookie(options =>
             {

@@ -1,7 +1,10 @@
-﻿using Company.DAL.Models.Identitymodule;
+﻿using Company.BLL.EmailSender;
+using Company.DAL.Models;
+using Company.DAL.Models.Identitymodule;
 using Company.PL.DTos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Threading.Tasks;
 
 namespace Company.PL.Controllers
@@ -10,14 +13,17 @@ namespace Company.PL.Controllers
     {
         public UserManager<AppUser> UserManager { get; }
         public SignInManager<AppUser> SignInManager { get; }
+        public IEmailSender EmailSender { get; }
 
         public AccountController(
             UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager
+            SignInManager<AppUser> signInManager,
+            IEmailSender emailSender
             )
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            EmailSender = emailSender;
         }
 
 
@@ -43,7 +49,7 @@ namespace Company.PL.Controllers
                var res=UserManager.CreateAsync(user, model.Password).Result;
                 if (res.Succeeded)
                 {
-                    return RedirectToAction("login");
+                    return RedirectToAction("SignIn");
                 }
                 else
                 {
@@ -93,6 +99,73 @@ namespace Company.PL.Controllers
         {
            await  SignInManager.SignOutAsync();
             return RedirectToAction(nameof(SignIn));
+        }
+
+
+        [HttpGet]
+        public IActionResult ForgetPassword() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> SendResetPasswordUrl(ForgetPasswordDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var res = await UserManager.FindByEmailAsync(model.Email);
+                if (res != null)
+                {
+                    var token = await UserManager.GeneratePasswordResetTokenAsync(res);
+                    var url = Url.Action("ResetPassword", "Account", new
+                    {
+                        Email = model.Email,
+                        token
+
+                    },Request.Scheme);
+                    var Email = new DAL.Models.Email()
+                    {
+                        To = model.Email,
+                        Subject = "Reset Your PassWord",
+                        Body = url
+                    };
+                    EmailSender.SendEmail(Email);
+                    return RedirectToAction("CheckYourInbox");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Inavlid Operation ");
+                }
+
+            }
+            return View(model); 
+            
+        }
+        [HttpGet]
+        public IActionResult CheckYourInbox()=>View();
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token) {
+            TempData["email"]=email;
+            TempData["token"]=token;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var email=TempData["email"] as string;
+                var token=TempData["token"] as string;
+                var user= await UserManager.FindByEmailAsync(email);
+                if (user != null)
+                {
+                   var res= await UserManager.ResetPasswordAsync(user, token,model.NewPassword);
+                    if (res.Succeeded) return RedirectToAction("SignIn");
+                }                   
+              }
+            ModelState.AddModelError("", "Invalid Operation");
+            return View(model);  
+
+
         }
 
     }
