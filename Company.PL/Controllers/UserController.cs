@@ -3,12 +3,15 @@ using Company.BLL.Repositories;
 using Company.DAL.Models;
 using Company.DAL.Models.Identitymodule;
 using Company.PL.DTos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Company.PL.Controllers
 {
+    [Authorize("Admin")]
+
     public class UserController : Controller
     {
         private readonly UserManager<AppUser> userManager;
