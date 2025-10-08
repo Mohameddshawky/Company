@@ -10,8 +10,7 @@ using System.Threading.Tasks;
 
 namespace Company.PL.Controllers
 {
-    [Authorize("Admin")]
-
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly UserManager<AppUser> userManager;
