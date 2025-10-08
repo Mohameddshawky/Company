@@ -47,7 +47,7 @@
                     <td>@item.Code</td>
                     <td>@item.Name</td>
                     <td>@item.CreateAt</td>
-                    <partial name="DepartmentEmployeePartial" model="@item.Id" />
+                    <partial name="ButtonsPartialView" model="@item.Id.ToString()" />
                   
                 </tr>
             }
