@@ -167,6 +167,8 @@ namespace Company.PL.Controllers
 
 
         }
+        [HttpGet]
+        public IActionResult AccessDenied() => View();
 
     }
 

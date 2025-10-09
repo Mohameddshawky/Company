@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow-lg rounded-3" style="max-width: 820px; width: 100%;">
+        <div class="row g-0">
+            <div class="col-md-5 d-none d-md-flex align-items-center justify-content-center" style="background: linear-gradient(135deg,#4e73df 0%,#6f42c1 100%); color: white; border-top-left-radius: .75rem; border-bottom-left-radius: .75rem;">
+                <div class="text-center p-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" fill="currentColor" class="bi bi-shield-lock-fill mb-3" viewBox="0 0 16 16">
+                        <path d="M8 .5l6 2.5v3.9c0 3.2-1.8 6.3-4.7 7.9-.7.3-1.5.5-2.3.5s-1.6-.2-2.3-.5C3.8 13.2 2 10.1 2 6.9V3L8 .5zM8 6.5a1 1 0 0 0-1 1v1a1 1 0 0 0 .293.707L7 9.293V10h2v-.707l.707-.086A1 1 0 0 0 10 8.5v-1a1 1 0 0 0-1-1H8z"/>
+                    </svg>
+                    <h4 class="fw-bold">Access Denied</h4>
+                    <p class="small opacity-75">You don't have permission to view this resource.</p>
+                </div>
+            </div>
+            <div class="col-md-7 p-4">
+                <div class="card-body">
+                    <h2 class="card-title">@ViewData["Title"]</h2>
+
+                    <p class="mb-3">It looks like your account doesn't have the required role or permission to access this page. If you believe this is a mistake, you can request access or sign in with a different account.</p>
+
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary">Return Home</a>
+                        <a href="javascript:history.back()" class="btn btn-outline-secondary">Go Back</a>
+                        @if (!User?.Identity?.IsAuthenticated ?? false)
+                        {
+                            <a href="@Url.Action("Login", "Account")" class="btn btn-link">Sign in</a>
+                        }
+                    </div>
+
+                    <hr />
+
+                    <small class="text-muted">If you need help, copy this reference and contact support: <code>ERR_ACCESS_DENIED</code></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
