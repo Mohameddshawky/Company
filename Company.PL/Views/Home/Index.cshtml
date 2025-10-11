@@ -1,8 +1,99 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4 fw-bold text-primary">Project Overview</h1>
+    <img src="~/Files/Images/programmer-illustration.jpg" alt="Programmer Illustration"
+         style="max-width: 50%; height: auto;border-radius: 12px;" />
 </div>
+
+<div style="font-family: Arial, sans-serif; max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 12px; text-align: center;">
+
+    <strong>
+        This project demonstrates expertise in developing a professional-grade web application using ASP.NET MVC,
+        leveraging industry best practices in Model-View-Controller architecture.
+    </strong>
+
+    <!-- Key Features -->
+    <div style="text-align: left; margin-top: 40px; background: #f8f9fa; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+        <h2 style="color: #007bff; padding-bottom: 10px; border-bottom: 2px solid #007bff;">🔍 Key Features</h2>
+  
+        <ul style="list-style: none; padding-left: 20px; font-size: 1.1em; line-height: 1.6;">
+            <li>✅ Clean and modular architecture ensuring maintainability</li>
+            <li>✅ Intuitive and user-friendly interface</li>
+            <li>✅ Optimized backend logic for high performance and scalability</li>
+        </ul>
+    </div>
+    <!-- Technologies Used -->
+    <div style="margin-top: 25px; text-align: center;">
+        <h2 style="color: #343a40; padding-bottom: 5px;">🚀 Technologies Used</h2>
+        <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
+            <img src="~/Files/Images/database.png" class="tech-icon" />
+            <img src="~/Files/Images/c_sharp_logo_2023.svg.png" class="tech-icon" />
+            <img src="~/Files/Images/sql-server.png" class="tech-icon" />
+            <img src="~/Files/Images/user-privacy-and-security-icon-vector.jpg" class="tech-icon" />
+            <img src="~/Files/Images/visual_studio_icon_2019.svg.png" class="tech-icon" />
+            <img src="~/Files/Images/net_core.png" class="tech-icon" />
+            <img src="~/Files/Images/bitmap-medium_entity-framework-core-logo_2colors_square_boxed_rgb.png" class="tech-icon" />
+            <img src="~/Files/Images/html-5.png" class="tech-icon" />
+            <img src="~/Files/Images/bootstrap_logo.svg.png" class="tech-icon" />
+            <img src="~/Files/Images/unnamed.png" class="tech-icon" />
+            <img src="~/Files/Images/14649051.png" class="tech-icon" />
+            <img src="~/Files/Images/java-script.png" class="tech-icon" />
+            <img src="~/Files/Images/search.png" class="tech-icon" />
+            <img src="~/Files/Images/google.png" class="tech-icon" />
+            <img src="~/Files/Images/package.png" class="tech-icon" />
+            <a href="https://github.com/Mohameddshawky">
+                <img src="~/Files/Images/github-logo.png" class="tech-icon" />
+            </a>
+
+        </div>
+    </div>
+ 
+    <!-- Project Overview -->
+    <div style="text-align: left; margin-top: 40px; background: #f8f9fa; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+        <h2 style="color: #007bff; padding-bottom: 10px; border-bottom: 2px solid #007bff;">💻 Project Details</h2>
+        <ul style="list-style-type: disc; padding-left: 30px; font-size: 1.1em; line-height: 1.8; color: #333;">
+            <li><strong>Technology Stack:</strong> <span style="color: #007bff;">ASP.NET MVC, C#, Entity Framework</span></li>
+            <li><strong>Core Functionalities:</strong> Full CRUD operations with seamless data handling</li>
+            <li><strong>Design Patterns:</strong> Implemented <span style="color: #28a745;">Generic Repository & Unit of Work</span> for structured data management</li>
+            <li><strong>Security Features:</strong> Authentication and Authorization using <span style="color: #dc3545;">Identity</span> for robust access control</li>
+        </ul>
+    </div>
+
+    <h2 style="text-align: left; margin-top: 40px; color: #007bff; padding-bottom: 10px; border-bottom: 2px solid #007bff;">Contact</h2>
+
+    <div>
+            <a href="https://www.linkedin.com/in/mohamed-shawky-0a73972b1/" >
+            <img src="~/Files/Images/linkedin.png" class="teche-icon" />
+            </a>
+      
+      
+        <a href="https://wa.me/+201113560216" >
+            <img src="~/Files/Images/logo.png" class="teche-icon" />
+        </a>
+        <a href="mailto:mvccompanyproject@gmail.com">
+            <img src="~/Files/Images/gmail.png" class="teche-icon" />
+        </a>
+    </div>
+ 
+</div>
+
+<style>
+    .tech-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .teche-icon {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    }
+</style>

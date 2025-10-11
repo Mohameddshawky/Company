@@ -9,6 +9,6 @@ namespace Company.BLL.EmailSender
 {
     public interface IEmailSender
     {
-        void SendEmail(Email email);
+        Task SendEmail(Email email);
     }
 }
