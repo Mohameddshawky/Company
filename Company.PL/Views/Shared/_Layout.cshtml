@@ -12,45 +12,75 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Company.PL</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="index">Department</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="index">Employee</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="index">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="index">Roles</a>
-                        </li>
-                         <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-danger fw-bold" asp-controller="Account" asp-action="SignOut">
-                        <i class="bi bi-box-arrow-right"></i> Sign Out
-                    </a>
-                </li>
-            </ul>
-                    </ul>
-                </div>
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm py-2">
+        <div class="container-fluid px-4">
+
+            <a class="navbar-brand d-flex align-items-center fw-bold text-primary" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-stack me-2 fs-4 text-primary"></i>
+                Company<span class="text-dark">.PL</span>
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#mainNavbar" aria-controls="mainNavbar"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+
+                <ul class="navbar-nav mx-auto gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active text-primary fw-semibold bg-light" : "text-secondary")"
+                           asp-controller="Home" asp-action="Index">
+                            <i class="bi bi-house-door me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded text-secondary"
+                           asp-controller="Home" asp-action="Privacy">
+                            <i class="bi bi-shield-lock me-1"></i> Privacy
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded text-secondary"
+                           asp-controller="Department" asp-action="Index">
+                            <i class="bi bi-diagram-3 me-1"></i> Departments
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded text-secondary"
+                           asp-controller="Employee" asp-action="Index">
+                            <i class="bi bi-people me-1"></i> Employees
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded text-secondary"
+                           asp-controller="User" asp-action="Index">
+                            <i class="bi bi-person-badge me-1"></i> Users
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded text-secondary"
+                           asp-controller="Role" asp-action="Index">
+                            <i class="bi bi-shield-check me-1"></i> Roles
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="btn btn-outline-danger fw-semibold d-flex align-items-center gap-2 px-3"
+                           asp-controller="Account" asp-action="SignOut">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Sign Out
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -68,3 +98,23 @@
     @await RenderSectionAsync("validationSection", required: false)
 </body>
 </html>
+
+
+<style>
+    .navbar-nav .nav-link {
+        transition: all 0.2s ease;
+    }
+    .navbar-nav .nav-link:hover {
+        background-color: #f8f9fa;
+        color: #0d6efd !important;
+    }
+    .navbar-nav .nav-link.active {
+        background-color: #e9f2ff !important;
+        border-radius: 8px;
+    }
+    .btn-outline-danger:hover {
+        color: #fff !important;
+        background-color: #dc3545 !important;
+        border-color: #dc3545 !important;
+    }
+</style>

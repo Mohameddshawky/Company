@@ -124,9 +124,10 @@ namespace Company.PL.Controllers
                     {
                         To = model.Email,
                         Subject = "Reset Your PassWord",
-                        Body = url
+                        Body = $"Please reset your Password by clicking here " +
+                        $"<a href={url}>Reset Password </a>"
                     };
-                    EmailSender.SendEmail(Email);
+                    await EmailSender.SendEmail(Email);
                     return RedirectToAction("CheckYourInbox");
                 }
                 else
@@ -143,8 +144,10 @@ namespace Company.PL.Controllers
 
         [HttpGet]
         public IActionResult ResetPassword(string email, string token) {
-            TempData["email"]=email;
-            TempData["token"]=token;
+            //TempData["email"]=email;
+            //TempData["token"]=token;
+            HttpContext.Session.SetString("email", email);
+            HttpContext.Session.SetString("token", token);
             return View();
         }
 
@@ -153,13 +156,20 @@ namespace Company.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                var email=TempData["email"] as string;
-                var token=TempData["token"] as string;
+                //var email=TempData["email"] as string;
+                //var token=TempData["token"] as string;
+                var email = HttpContext.Session.GetString("email");
+                var token = HttpContext.Session.GetString("token");
                 var user= await UserManager.FindByEmailAsync(email);
                 if (user != null)
                 {
                    var res= await UserManager.ResetPasswordAsync(user, token,model.NewPassword);
-                    if (res.Succeeded) return RedirectToAction("SignIn");
+                    if (res.Succeeded)
+                    {
+                        HttpContext.Session.Remove("email");
+                        HttpContext.Session.Remove("token");
+                        return RedirectToAction("SignIn");
+                    }
                 }                   
               }
             ModelState.AddModelError("", "Invalid Operation");
@@ -167,6 +177,8 @@ namespace Company.PL.Controllers
 
 
         }
+        [HttpGet]
+        public IActionResult AccessDenied() => View();
 
     }
 

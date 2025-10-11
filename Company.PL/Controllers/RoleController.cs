@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace Company.PL.Controllers
 {
-    [Authorize("Admin")]
+    [Authorize(Roles = "Admin")]
+
     public class RoleController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -70,7 +71,7 @@ namespace Company.PL.Controllers
             var Role = await roleManager.FindByIdAsync(id);
             if (Role == null) return NotFound();
             var Users = await userManager.Users.ToListAsync();
-            var userdto = new RoleDto()
+            var RoleDto = new RoleDto()
             {
 
                 Id = Role.Id,
@@ -82,7 +83,7 @@ namespace Company.PL.Controllers
                     IsSelected = userManager.IsInRoleAsync(u, Role.Name).Result
                 }).ToList()
             };
-            return View(userdto);
+            return View(RoleDto);
         }
 
         [HttpPost]
