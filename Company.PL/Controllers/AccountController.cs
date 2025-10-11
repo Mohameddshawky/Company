@@ -124,9 +124,10 @@ namespace Company.PL.Controllers
                     {
                         To = model.Email,
                         Subject = "Reset Your PassWord",
-                        Body = url
+                        Body = $"Please reset your Password by clicking here " +
+                        $"<a href={url}>Reset Password </a>"
                     };
-                    EmailSender.SendEmail(Email);
+                    await EmailSender.SendEmail(Email);
                     return RedirectToAction("CheckYourInbox");
                 }
                 else
