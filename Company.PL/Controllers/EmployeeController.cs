@@ -30,11 +30,12 @@ namespace Company.PL.Controllers
         public async Task<IActionResult> Index(string? EmployeeSearchName)
         {
             IEnumerable<Employee> employees;
-            if (String.IsNullOrEmpty(EmployeeSearchName))
+            if (string.IsNullOrEmpty(EmployeeSearchName))
                 employees = await unitOfWork.EmployeeRepository.GetAllAsync();
             else
                 employees = await unitOfWork.EmployeeRepository.SearchAsync(EmployeeSearchName);
-                return PartialView("EmployeePartialView/EmployeeTablePartialView", employees);
+
+            return View(employees);
         }
         [HttpGet]
         public async Task<IActionResult> Search(string? EmployeeSearchName)
@@ -44,7 +45,9 @@ namespace Company.PL.Controllers
                 employees = await unitOfWork.EmployeeRepository.GetAllAsync();
             else
                 employees = await unitOfWork.EmployeeRepository.SearchAsync(EmployeeSearchName);
-                return View(employees);
+
+            return PartialView("~/Views/Employee/EmployeePartialView/EmployeeTablePartialView.cshtml", employees);
+
         }
 
 
