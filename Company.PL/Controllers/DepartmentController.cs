@@ -36,6 +36,17 @@ namespace Company.PL.Controllers
                 departments = await unitOfWork.DepartmentRepository.SearchAsync(DepartmentSearchName);
 
             return View(departments);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Search(string? DepartmentSearchName)
+        {
+            IEnumerable<Departments> departments;
+            if (string.IsNullOrEmpty(DepartmentSearchName))
+                departments = await unitOfWork.DepartmentRepository.GetAllAsync();
+            else
+                departments = await unitOfWork.DepartmentRepository.SearchAsync(DepartmentSearchName);
+
+            return PartialView("~/Views/Department/DepartmentPartialView/DepartmentTablePartialView.cshtml", departments);
 
         }
         [HttpGet]
