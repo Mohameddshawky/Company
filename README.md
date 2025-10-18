@@ -2,7 +2,7 @@
 
 I’m pleased to present my first MVC project, built using ASP.NET Core MVC, which emphasizes clean separation of concerns — making the application easier to manage, test, and scale.
 
-This project reflects my learning journey through the Route Academy course, and I’d like to extend my sincere gratitude to Mariam Shindy for her valuable guidance and continuous support. 💠
+
 
 🛠️ Technologies Used
 
