@@ -34,8 +34,20 @@ namespace Company.PL.Controllers
                 employees = await unitOfWork.EmployeeRepository.GetAllAsync();
             else
                 employees = await unitOfWork.EmployeeRepository.SearchAsync(EmployeeSearchName);
+                return PartialView("EmployeePartialView/EmployeeTablePartialView", employees);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Search(string? EmployeeSearchName)
+        {
+            IEnumerable<Employee> employees;
+            if (String.IsNullOrEmpty(EmployeeSearchName))
+                employees = await unitOfWork.EmployeeRepository.GetAllAsync();
+            else
+                employees = await unitOfWork.EmployeeRepository.SearchAsync(EmployeeSearchName);
                 return View(employees);
         }
+
+
         [HttpGet]
         public IActionResult Create()
         {
