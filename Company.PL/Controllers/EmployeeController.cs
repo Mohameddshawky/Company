@@ -30,12 +30,27 @@ namespace Company.PL.Controllers
         public async Task<IActionResult> Index(string? EmployeeSearchName)
         {
             IEnumerable<Employee> employees;
+            if (string.IsNullOrEmpty(EmployeeSearchName))
+                employees = await unitOfWork.EmployeeRepository.GetAllAsync();
+            else
+                employees = await unitOfWork.EmployeeRepository.SearchAsync(EmployeeSearchName);
+
+            return View(employees);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Search(string? EmployeeSearchName)
+        {
+            IEnumerable<Employee> employees;
             if (String.IsNullOrEmpty(EmployeeSearchName))
                 employees = await unitOfWork.EmployeeRepository.GetAllAsync();
             else
                 employees = await unitOfWork.EmployeeRepository.SearchAsync(EmployeeSearchName);
-                return View(employees);
+
+            return PartialView("~/Views/Employee/EmployeePartialView/EmployeeTablePartialView.cshtml", employees);
+
         }
+
+
         [HttpGet]
         public IActionResult Create()
         {
