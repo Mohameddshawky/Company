@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Departments>
+<table class="table table-striped table-hover table-bordered shadow-sm">
+    <thead class="table-dark text-center">
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Date of creation</th>
+            <th>Details</th>
+            <th>update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Code</td>
+                <td>@item.Name</td>
+                <td>@item.CreateAt</td>
+                <partial name="ButtonsPartialView" model="@item.Id.ToString()" />
+
+            </tr>
+        }
+
+    </tbody>
+</table>
