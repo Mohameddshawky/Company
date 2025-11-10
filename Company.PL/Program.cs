@@ -38,7 +38,7 @@ namespace Company.PL
             builder.Services.AddSession();
 
             var app = builder.Build();
-
+            //add check
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
