@@ -4,15 +4,17 @@ using Company.BLL.Interfaces;
 using Company.BLL.Repositories;
 using Company.DAL.Data.Contexts;
 using Company.DAL.Models.Identitymodule;
+using Company.PL.DataSeed;
 using Company.PL.Mapping;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Company.PL
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +40,20 @@ namespace Company.PL
             builder.Services.AddSession();
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                var seeder = new DataSeeding(
+                    services.GetRequiredService<CompanyDbContext>(),
+                    services.GetRequiredService<UserManager<AppUser>>(),
+                    services.GetRequiredService<RoleManager<IdentityRole>>()
+                );
+
+                await seeder.SeedIdentityDataAsync();
+            }
+
             //add check
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
